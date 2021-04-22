@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "769176660",
+    "firebase_url": "https://paindairyauthentication-default-rtdb.firebaseio.com",
+    "project_id": "paindairyauthentication",
+    "storage_bucket": "paindairyauthentication.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:769176660:android:a851251d8a1f595cd129c1",
+        "android_client_info": {
+          "package_name": "com.example.paindairy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "769176660-he69gvn06aeeoj4mhfk34vk1igsutq6p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDr5tlcbhVrxaY6RKthMcEFxn71idQE8kk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "769176660-he69gvn06aeeoj4mhfk34vk1igsutq6p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
