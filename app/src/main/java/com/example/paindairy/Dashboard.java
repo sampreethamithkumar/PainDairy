@@ -3,6 +3,12 @@ package com.example.paindairy;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,6 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class Dashboard extends AppCompatActivity implements View.OnClickListener{
     private ActivityDashboardBinding binding;
+    private AppBarConfiguration mAppBarConfiguration;
 
     private FirebaseUser user;
     private DatabaseReference reference;
@@ -37,55 +44,63 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         View view = binding.getRoot();
         setContentView(view);
 
+        setSupportActionBar(binding.appBar.toolbar);
+        
+        mAppBarConfiguration = new AppBarConfiguration.Builder(R.id.nav_home_fragment, R.id.nav_add_fragment, R.id.nav_view_fragment)
+                .setOpenableLayout(binding.drawerLayout)
+                .build();
 
-        ActionBar actionBar = getSupportActionBar();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        NavHostFragment navHostFragment = (NavHostFragment) fragmentManager.findFragmentById(R.id.nav_host_fragment);
 
+        NavController navController = navHostFragment.getNavController();
 
-        mAuth = FirebaseAuth.getInstance();
+        NavigationUI.setupWithNavController(binding.navView, navController);
 
-        binding.signOut.setOnClickListener(this);
-
-        getUserDetails();
+        NavigationUI.setupWithNavController(binding.appBar.toolbar, navController,mAppBarConfiguration);
+//        mAuth = FirebaseAuth.getInstance();
+//
+//        binding.signOut.setOnClickListener(this);
+//
+//        getUserDetails();
     }
 
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.signOut) {
-            FirebaseAuth.getInstance().signOut();
-            startActivity(new Intent(Dashboard.this, MainActivity.class));
-        }
+//        if (v.getId() == R.id.signOut) {
+//            FirebaseAuth.getInstance().signOut();
+//            startActivity(new Intent(Dashboard.this, MainActivity.class));
+//        }
 
     }
 
-    private void getUserDetails() {
-        user = FirebaseAuth.getInstance().getCurrentUser();
-        reference = FirebaseDatabase.getInstance().getReference("Users");
-        userID = user.getUid();
-
-
-
-        reference.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                User userProfile = snapshot.getValue(User.class);
-
-                if (userProfile != null){
-                    String fullName = userProfile.fullName;
-                    String email = userProfile.email;
-                    String age = userProfile.age;
-
-                    binding.emailIdTextView.setText(email);
-                    binding.fullNameTextView.setText(fullName);
-                    binding.ageTextView.setText(age);
-
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(Dashboard.this, "Something Wrong happened", Toast.LENGTH_LONG).show();
-            }
-        });
-    }
+//    private void getUserDetails() {
+//        user = FirebaseAuth.getInstance().getCurrentUser();
+//        reference = FirebaseDatabase.getInstance().getReference("Users");
+//        userID = user.getUid();
+//
+//        reference.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                User userProfile = snapshot.getValue(User.class);
+//
+//                if (userProfile != null){
+//                    String fullName = userProfile.fullName;
+//                    String email = userProfile.email;
+//                    String age = userProfile.age;
+//
+//                    binding.emailIdTextView.setText(email);
+//                    binding.fullNameTextView.setText(fullName);
+//                    binding.ageTextView.setText(age);
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//                Toast.makeText(Dashboard.this, "Something Wrong happened", Toast.LENGTH_LONG).show();
+//            }
+//        });
+//    }
 }

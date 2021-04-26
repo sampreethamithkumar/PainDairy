@@ -9,10 +9,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PainDairy">
-        <activity android:name=".Dashboard" ></activity>
-        <activity android:name=".ForgotPassword" />
-        <activity android:name=".RegisterUser" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".Dashboard"
+            android:theme="@style/Theme.PainDairy.NoActionBar" ></activity>
+        <activity android:name=".ForgotPassword"
+            android:theme="@style/Theme.PainDairy.NoActionBar" />
+        <activity android:name=".RegisterUser"
+            android:theme="@style/Theme.PainDairy.NoActionBar" />
+        <activity android:name=".MainActivity"
+            android:theme="@style/Theme.PainDairy.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
