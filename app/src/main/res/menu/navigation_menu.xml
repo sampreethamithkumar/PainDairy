@@ -7,7 +7,7 @@
         android:title="Home" />
     <item
         android:id="@+id/nav_daily_record_fragment"
-        android:title="Daily Record Fragment" />
+        android:title="Daily Record" />
     <item
         android:id="@+id/nav_pain_data_entry_fragment"
         android:title="Pain Data Entry" />
