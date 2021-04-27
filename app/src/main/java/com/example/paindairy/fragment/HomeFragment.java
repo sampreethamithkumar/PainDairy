@@ -27,4 +27,5 @@ public class HomeFragment extends Fragment {
         super.onDestroyView();
         addBinding = null;
     }
+
 }

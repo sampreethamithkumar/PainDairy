@@ -46,7 +46,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
 
         setSupportActionBar(binding.appBar.toolbar);
         
-        mAppBarConfiguration = new AppBarConfiguration.Builder(R.id.nav_home_fragment, R.id.nav_add_fragment, R.id.nav_view_fragment)
+        mAppBarConfiguration = new AppBarConfiguration.Builder(R.id.nav_home_fragment, R.id.nav_account_fragment,R.id.nav_daily_record_fragment, R.id.nav_map_fragment, R.id.nav_pain_data_entry_fragment, R.id.nav_report_fragment)
                 .setOpenableLayout(binding.drawerLayout)
                 .build();
 
