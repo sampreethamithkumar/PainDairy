@@ -19,13 +19,6 @@
         android:id="@+id/nav_map_fragment"
         android:title="Maps" />
 
-<!--    <item-->
-<!--        android:id="@+id/nav_add_fragment"-->
-<!--        android:title="Add Fragment" />-->
-<!--    <item-->
-<!--        android:id="@+id/nav_view_fragment"-->
-<!--        android:title="View Fragment" />-->
-
     <item android:id="@+id/nav_account_fragment"
         android:title="Account" />
 </menu>
