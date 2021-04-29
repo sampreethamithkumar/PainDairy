@@ -4,11 +4,21 @@
     tools:showIn="navigation_view">
     <item
         android:id="@+id/nav_home_fragment"
-        android:title="Home Fragment" />
+        android:title="Home" />
     <item
-        android:id="@+id/nav_add_fragment"
-        android:title="Add Fragment" />
+        android:id="@+id/nav_daily_record_fragment"
+        android:title="Daily Record" />
     <item
-        android:id="@+id/nav_view_fragment"
-        android:title="View Fragment" />
+        android:id="@+id/nav_pain_data_entry_fragment"
+        android:title="Pain Data Entry" />
+    <item
+        android:id="@+id/nav_report_fragment"
+        android:title="Report" />
+
+    <item
+        android:id="@+id/nav_map_fragment"
+        android:title="Maps" />
+
+    <item android:id="@+id/nav_account_fragment"
+        android:title="Account" />
 </menu>

@@ -3,16 +3,31 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/mobile_navigation"
     app:startDestination="@id/nav_home_fragment">
-    <fragment
-        android:id="@+id/nav_add_fragment"
-        android:name="com.example.paindairy.fragment.AddFragment"
-        android:label="AddFragment" />
-    <fragment
-        android:id="@+id/nav_view_fragment"
-        android:name="com.example.paindairy.fragment.ViewFragment"
-        android:label="ViewFragment" />
+
     <fragment
         android:id="@+id/nav_home_fragment"
         android:name="com.example.paindairy.fragment.HomeFragment"
-        android:label="HomeFragment" />
+        android:label="Pain Dairy" />
+    <fragment
+        android:id="@+id/nav_daily_record_fragment"
+        android:name="com.example.paindairy.fragment.DailyRecordFragment"
+        android:label="Daily Record" />
+    <fragment
+        android:id="@+id/nav_account_fragment"
+        android:name="com.example.paindairy.fragment.AccountFragment"
+        android:label="Account" />
+
+    <fragment
+        android:id="@+id/nav_pain_data_entry_fragment"
+        android:name="com.example.paindairy.fragment.PainDataEntryFragment"
+        android:label="Pain Data Entry" />
+    <fragment
+        android:id="@+id/nav_report_fragment"
+        android:name="com.example.paindairy.fragment.ReportsFragment"
+        android:label="Reports" />
+    <fragment
+        android:id="@+id/nav_map_fragment"
+        android:name="com.example.paindairy.fragment.MapsFragment"
+        android:label="Maps" />
+
 </navigation>

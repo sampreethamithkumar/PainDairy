@@ -31,6 +31,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         mAuth = FirebaseAuth.getInstance();
 
+        FirebaseUser user = mAuth.getCurrentUser();
+
+        if (user != null)
+            startActivity(new Intent(this, Dashboard.class));
+
         binding.signUpText.setOnClickListener(this);
         binding.forgotPasswordText.setOnClickListener(this);
         binding.loginButton.setOnClickListener(this);
@@ -50,21 +55,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String email = binding.emailIdEditText.getText().toString().trim();
         String password = binding.passwordEditText.getText().toString().trim();
 
-        if (email.isEmpty()) {
-            binding.emailIdEditText.setError("Email Id Is requried");
-            binding.emailIdEditText.requestFocus();
+        if (!inputChecking(email,password))
             return;
-        }
-        else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            binding.emailIdEditText.setError("Please enter a valid email");
-            binding.emailIdEditText.requestFocus();
-            return;
-        }
-        else if (password.isEmpty()) {
-            binding.passwordEditText.setError("Passwrod is required");
-            binding.passwordEditText.requestFocus();
-            return;
-        }
 
         binding.progressBar.setVisibility(View.VISIBLE);
 
@@ -75,7 +67,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (task.isSuccessful()) {
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-//                    Email Verification Part Add it if only need.
                     if (user.isEmailVerified()) {
                         binding.progressBar.setVisibility(View.GONE);
                         startActivity(new Intent(MainActivity.this, Dashboard.class));
@@ -85,9 +76,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         Toast.makeText(MainActivity.this, "Check your email to verify your account!", Toast.LENGTH_LONG).show();
                         binding.progressBar.setVisibility(View.GONE);
                     }
-
-//                    Else Add this.
-//                    startActivity(new Intent(MainActivity.this, ProfileActivity.class));
                 }
                 else {
                     Toast.makeText(MainActivity.this, "Failed to login! Please check your credentials", Toast.LENGTH_LONG).show();
@@ -95,6 +83,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         });
+    }
 
+    public boolean inputChecking(String email, String password) {
+        if (email.isEmpty()) {
+            binding.emailIdEditText.setError("Email Id Is requried");
+            binding.emailIdEditText.requestFocus();
+            return false;
+        }
+        else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            binding.emailIdEditText.setError("Please enter a valid email");
+            binding.emailIdEditText.requestFocus();
+            return false;
+        }
+        else if (password.isEmpty()) {
+            binding.passwordEditText.setError("Passwrod is required");
+            binding.passwordEditText.requestFocus();
+            return false;
+        }
+        return true;
     }
 }
