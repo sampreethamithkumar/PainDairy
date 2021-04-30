@@ -1,4 +1,4 @@
-package com.example.paindairy;
+package com.example.paindairy.entity;
 
 public class User {
     public String fullName, age, email;

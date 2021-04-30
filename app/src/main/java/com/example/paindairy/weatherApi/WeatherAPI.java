@@ -1,5 +1,7 @@
 package com.example.paindairy.weatherApi;
 
+import com.google.gson.annotations.SerializedName;
+
 public class WeatherAPI {
 
     @SerializedName("main")
