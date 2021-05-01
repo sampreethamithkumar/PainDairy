@@ -201,8 +201,6 @@ public class PainDataEntryFragment extends Fragment implements View.OnClickListe
         catch (Exception exception) {
             exception.printStackTrace();
         }
-
-
     }
 
     public void insertPainRecord() {
@@ -214,6 +212,14 @@ public class PainDataEntryFragment extends Fragment implements View.OnClickListe
         double humidity = Double.parseDouble(painDataEntryBinding.currentHumidity.getText().toString());
         double pressure = Double.parseDouble(painDataEntryBinding.currentPressure.getText().toString());
 
+        try{
+            Integer.parseInt(stepsTaken);
+        }
+        catch (Exception exception) {
+            painDataEntryBinding.stepsTakenEditText.setError("Should be Numbers only");
+            painDataEntryBinding.stepsTakenEditText.requestFocus();
+            return;
+        }
 
         if ((!painLevel.isEmpty() && painLevel != null) && (!painLocation.isEmpty() && painLocation != null) && (!moodLevel.isEmpty() && moodLevel != null)) {
             int painLevelInt = Integer.parseInt(painLevel);
@@ -225,7 +231,6 @@ public class PainDataEntryFragment extends Fragment implements View.OnClickListe
                 painRecordViewModel.insert(painRecord);
                 Toast.makeText(getActivity(), "Pain Record Inserted successfully",Toast.LENGTH_LONG).show();
                 painDataEntryBinding.saveButton.setEnabled(false);
-                getData();
             }
             catch (Exception exception){
                 Toast.makeText(getActivity(), "Unexpected error occured inserting the data",Toast.LENGTH_LONG).show();
@@ -236,8 +241,6 @@ public class PainDataEntryFragment extends Fragment implements View.OnClickListe
     }
 
     public void editPainRecord() {
-
-        getData();
 
         /**
          * Getting last Id of the Pain Record
@@ -258,6 +261,15 @@ public class PainDataEntryFragment extends Fragment implements View.OnClickListe
         double humidity = Double.parseDouble(painDataEntryBinding.currentHumidity.getText().toString());
         double pressure = Double.parseDouble(painDataEntryBinding.currentPressure.getText().toString());
 
+
+        try{
+            Integer.parseInt(stepsTaken);
+        }
+        catch (Exception exception) {
+            painDataEntryBinding.stepsTakenEditText.setError("Should be Numbers only");
+            painDataEntryBinding.stepsTakenEditText.requestFocus();
+            return;
+        }
 
         if ((!painLevel.isEmpty() && painLevel != null) && (!painLocation.isEmpty() && painLocation != null) && (!moodLevel.isEmpty() && moodLevel != null)) {
             int painLevelInt = Integer.parseInt(painLevel);
