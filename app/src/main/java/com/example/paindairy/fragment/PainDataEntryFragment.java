@@ -71,8 +71,7 @@ public class PainDataEntryFragment extends Fragment implements View.OnClickListe
 
         painLocationSpinner();
         moodLevelSpinner();
-
-        enableOrDisableEditButton();
+        enableOrDisableButton();
 
         painDataEntryBinding.saveButton.setOnClickListener(this);
 
@@ -171,7 +170,7 @@ public class PainDataEntryFragment extends Fragment implements View.OnClickListe
         });
     }
 
-    private void enableOrDisableEditButton() {
+    private void enableOrDisableButton() {
         String userEmailId = firebaseUser.getEmail();
         Date currentDate;
         try {
@@ -183,12 +182,18 @@ public class PainDataEntryFragment extends Fragment implements View.OnClickListe
                     @Override
                     public void onChanged(PainRecord painRecord) {
                         if (painRecord != null)
-                            if (currentDate.compareTo(painRecord.currentDate) == 0)
+                            if (currentDate.compareTo(painRecord.currentDate) == 0) {
                                 painDataEntryBinding.editButton.setEnabled(true);
-                            else
+                                painDataEntryBinding.saveButton.setEnabled(false);
+                            }
+                            else{
                                 painDataEntryBinding.editButton.setEnabled(false);
-                        else
+                                painDataEntryBinding.saveButton.setEnabled(true);
+                            }
+                        else{
                             painDataEntryBinding.editButton.setEnabled(false);
+                            painDataEntryBinding.saveButton.setEnabled(true);
+                        }
                     }
                 });
             }
