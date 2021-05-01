@@ -15,7 +15,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 
-@Database(entities = {PainRecord.class}, version = 8, exportSchema = false)
+@Database(entities = {PainRecord.class}, version = 11, exportSchema = false)
 @TypeConverters({Converters.class})
 public abstract class PainRecordDatabase extends RoomDatabase {
     public abstract PainRecordDAO painRecordDAO();

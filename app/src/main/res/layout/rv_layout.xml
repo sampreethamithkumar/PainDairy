@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/firstLineRelativeLayout"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp">
+
+
+        <LinearLayout
+            android:id="@+id/painIntensityBlock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_marginLeft="30dp">
+
+            <TextView
+                android:id="@+id/painIntensityLevel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pain Intensity Level"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text=""
+                android:id="@+id/painIntensityLevelTextView"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/painLocationBlock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_toRightOf="@+id/painIntensityBlock"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/painLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pain Location"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text=""
+                android:id="@+id/painLocationTextView"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/moodLevelBlock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_toRightOf="@+id/painLocationBlock"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/moodLevel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mood Level"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text=""
+                android:id="@+id/moodLevelTextView"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/secondLineRelativeLayout"
+        android:layout_below="@id/firstLineRelativeLayout"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true">
+
+        <LinearLayout
+            android:id="@+id/dateBlock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pain Intensity Level"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text=""
+                android:id="@+id/dateTextView"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/stepsTakenBlock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_toRightOf="@+id/dateBlock"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/stepTaken"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Steps Taken"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text=""
+                android:id="@+id/stepsTakenTextView"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+</RelativeLayout>

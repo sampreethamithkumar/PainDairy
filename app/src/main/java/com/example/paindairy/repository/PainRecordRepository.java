@@ -79,8 +79,10 @@ public class PainRecordRepository {
         return painRecordDao.getByDate(date);
     }
 
-    public LiveData<Integer> getLastId() {
-        return painRecordDao.getLastId();
+    public LiveData<Integer> getLastId(String emailid) {
+        return painRecordDao.getLastId(emailid);
     }
+
+    public LiveData<PainRecord> getLastUpdatedDate(String emailid) { return painRecordDao.getLastUpdatedDate(emailid); }
 }
 
