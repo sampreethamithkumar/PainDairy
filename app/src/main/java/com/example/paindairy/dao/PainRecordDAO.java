@@ -36,6 +36,9 @@ public interface PainRecordDAO {
     @Query("SELECT * FROM PainRecord WHERE current_date = :date LIMIT 1")
     LiveData<PainRecord> getByDate(Date date);
 
-    @Query("SELECT Max(uid) FROM PainRecord")
-    LiveData<Integer> getLastId();
+    @Query("SELECT Max(uid) FROM PainRecord WHERE email_id = :emailid")
+    LiveData<Integer> getLastId(String emailid);
+
+    @Query("SELECT * FROM PainRecord WHERE uid = (SELECT Max(uid) FROM PainRecord WHERE email_id = :emailid)")
+    LiveData<PainRecord> getLastUpdatedDate(String emailid);
 }

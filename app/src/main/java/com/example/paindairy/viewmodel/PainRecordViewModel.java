@@ -50,7 +50,11 @@ public class PainRecordViewModel extends AndroidViewModel {
         return painRecordRepository.getByDate(date);
     }
 
-    public LiveData<Integer> getLastId() {
-        return painRecordRepository.getLastId();
+    public LiveData<Integer> getLastId(String emailid) {
+        return painRecordRepository.getLastId(emailid);
+    }
+
+    public LiveData<PainRecord> getLastUpdatedDate(String emailid) {
+        return painRecordRepository.getLastUpdatedDate(emailid);
     }
 }

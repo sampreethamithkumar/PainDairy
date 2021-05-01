@@ -2,6 +2,7 @@ package com.example.paindairy.fragment;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,22 +19,39 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.paindairy.R;
 import com.example.paindairy.databinding.PainDataEntryBinding;
 import com.example.paindairy.entity.PainRecord;
+import com.example.paindairy.entity.Weather;
 import com.example.paindairy.viewmodel.PainRecordViewModel;
+import com.example.paindairy.weatherApi.Main;
+import com.example.paindairy.weatherApi.RetrofitClient;
+import com.example.paindairy.weatherApi.RetrofitInterface;
+import com.example.paindairy.weatherApi.WeatherAPI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class PainDataEntryFragment extends Fragment implements View.OnClickListener, SeekBar.OnSeekBarChangeListener{
+    private static final String API_KEY = "af0cfc6611defe4fe50200aec8c78d50";
+    private static final String KEYWORD = "melbourne";
+
     private PainDataEntryBinding painDataEntryBinding;
     private PainRecordViewModel painRecordViewModel;
 
     private FirebaseUser firebaseUser;
 
     private int lastId;
+
+    private RetrofitInterface retrofitInterface;
 
     public PainDataEntryFragment() {
 
@@ -48,14 +66,21 @@ public class PainDataEntryFragment extends Fragment implements View.OnClickListe
 
         painRecordViewModel = new ViewModelProvider(this).get(PainRecordViewModel.class);
 
+        retrofitInterface = RetrofitClient.getRetrofitService();
+        getWeatherDetails();
+
         painLocationSpinner();
         moodLevelSpinner();
+
+        enableOrDisableEditButton();
 
         painDataEntryBinding.saveButton.setOnClickListener(this);
 
         painDataEntryBinding.editButton.setOnClickListener(this);
 
         painDataEntryBinding.seekBar.setOnSeekBarChangeListener(this);
+
+        painDataEntryBinding.deleteButton.setOnClickListener(this);
 
         return view;
     }
@@ -75,6 +100,13 @@ public class PainDataEntryFragment extends Fragment implements View.OnClickListe
         else if (v.getId() == R.id.editButton) {
             editPainRecord();
         }
+        else if (v.getId() == R.id.deleteButton) {
+            deleteRecords();
+        }
+    }
+
+    private void deleteRecords() {
+        painRecordViewModel.deleteAll();
     }
 
     @Override
@@ -139,17 +171,52 @@ public class PainDataEntryFragment extends Fragment implements View.OnClickListe
         });
     }
 
+    private void enableOrDisableEditButton() {
+        String userEmailId = firebaseUser.getEmail();
+        Date currentDate;
+        try {
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+            currentDate = formatter.parse(formatter.format(new Date()));
+
+            if (userEmailId != null) {
+                painRecordViewModel.getLastUpdatedDate(userEmailId).observe(getViewLifecycleOwner(), new Observer<PainRecord>() {
+                    @Override
+                    public void onChanged(PainRecord painRecord) {
+                        if (painRecord != null)
+                            if (currentDate.compareTo(painRecord.currentDate) == 0)
+                                painDataEntryBinding.editButton.setEnabled(true);
+                            else
+                                painDataEntryBinding.editButton.setEnabled(false);
+                        else
+                            painDataEntryBinding.editButton.setEnabled(false);
+                    }
+                });
+            }
+        }
+        catch (Exception exception) {
+            exception.printStackTrace();
+        }
+
+
+    }
+
     public void insertPainRecord() {
         String painLevel = painDataEntryBinding.seekBarCurrentValue.getText().toString();
         String painLocation = painDataEntryBinding.painLocationSpinner.getSelectedItem().toString();
         String moodLevel = painDataEntryBinding.moodLevelSpinner.getSelectedItem().toString();
         String stepsTaken = painDataEntryBinding.stepsTakenEditText.getText().toString();
+        double temp = Double.parseDouble(painDataEntryBinding.currentTemperature.getText().toString());
+        double humidity = Double.parseDouble(painDataEntryBinding.currentHumidity.getText().toString());
+        double pressure = Double.parseDouble(painDataEntryBinding.currentPressure.getText().toString());
+
 
         if ((!painLevel.isEmpty() && painLevel != null) && (!painLocation.isEmpty() && painLocation != null) && (!moodLevel.isEmpty() && moodLevel != null)) {
             int painLevelInt = Integer.parseInt(painLevel);
             int stepsTakenInt = Integer.parseInt(stepsTaken);
             try {
-                PainRecord painRecord = new PainRecord(firebaseUser.getEmail(), painLevelInt, painLocation, moodLevel, stepsTakenInt);
+                SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+                Date currentDate = formatter.parse(formatter.format(new Date()));
+                PainRecord painRecord = new PainRecord(firebaseUser.getEmail(), painLevelInt, painLocation, moodLevel, stepsTakenInt, currentDate,temp, humidity, pressure);
                 painRecordViewModel.insert(painRecord);
                 Toast.makeText(getActivity(), "Pain Record Inserted successfully",Toast.LENGTH_LONG).show();
                 painDataEntryBinding.saveButton.setEnabled(false);
@@ -164,22 +231,28 @@ public class PainDataEntryFragment extends Fragment implements View.OnClickListe
     }
 
     public void editPainRecord() {
+
         getData();
 
         /**
          * Getting last Id of the Pain Record
          */
-        painRecordViewModel.getLastId().observe(this, new Observer<Integer>() {
+        painRecordViewModel.getLastId(firebaseUser.getEmail()).observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
                 lastId = integer;
             }
         });
 
+
         String painLevel = painDataEntryBinding.seekBarCurrentValue.getText().toString();
         String painLocation = painDataEntryBinding.painLocationSpinner.getSelectedItem().toString();
         String moodLevel = painDataEntryBinding.moodLevelSpinner.getSelectedItem().toString();
         String stepsTaken = painDataEntryBinding.stepsTakenEditText.getText().toString();
+        double temp = Double.parseDouble(painDataEntryBinding.currentTemperature.getText().toString());
+        double humidity = Double.parseDouble(painDataEntryBinding.currentHumidity.getText().toString());
+        double pressure = Double.parseDouble(painDataEntryBinding.currentPressure.getText().toString());
+
 
         if ((!painLevel.isEmpty() && painLevel != null) && (!painLocation.isEmpty() && painLocation != null) && (!moodLevel.isEmpty() && moodLevel != null)) {
             int painLevelInt = Integer.parseInt(painLevel);
@@ -192,6 +265,9 @@ public class PainDataEntryFragment extends Fragment implements View.OnClickListe
                         painRecord.painLocation = painLocation;
                         painRecord.moodLevel = moodLevel;
                         painRecord.stepsPerDay = stepsTakenInt;
+                        painRecord.temperature = temp;
+                        painRecord.humidity = humidity;
+                        painRecord.pressure = pressure;
                         painRecordViewModel.update(painRecord);
                         Toast.makeText(getContext(), "Pain Record Updated", Toast.LENGTH_LONG).show();
                     }
@@ -201,5 +277,36 @@ public class PainDataEntryFragment extends Fragment implements View.OnClickListe
         }
         else
             Toast.makeText(getContext(), "Please make changes to the value before editing", Toast.LENGTH_LONG).show();
+    }
+
+    private void getWeatherDetails() {
+        Call<WeatherAPI> callAsync = retrofitInterface.weatherApi(API_KEY,KEYWORD);
+
+        callAsync.enqueue(new Callback<WeatherAPI>() {
+            @Override
+            public void onResponse(Call<WeatherAPI> call, Response<WeatherAPI> response) {
+                if (response.isSuccessful()) {
+                    Main main = response.body().main;
+                    Weather weather = new Weather(main.getTemp(), main.getPressure(), main.getHumidity());
+
+                    displayWeatherDetails(weather);
+                }
+                else
+                    Log.i("Error", "Response Failed");
+            }
+
+            @Override
+            public void onFailure(Call<WeatherAPI> call, Throwable t) {
+                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT);
+            }
+        });
+    }
+
+    private void displayWeatherDetails(Weather weather) {
+        double tempDouble = Double.parseDouble(weather.getTemperature()) - 273.15;
+        DecimalFormat decimalFormat = new DecimalFormat("##.##");
+        painDataEntryBinding.currentTemperature.setText(decimalFormat.format(tempDouble));
+        painDataEntryBinding.currentHumidity.setText(weather.getHumidity());
+        painDataEntryBinding.currentPressure.setText(weather.getPressure());
     }
 }

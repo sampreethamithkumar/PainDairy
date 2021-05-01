@@ -40,10 +40,13 @@ public class PainRecord {
     @NonNull
     public Date currentDate;
 
+    @NonNull
     public double temperature;
 
+    @NonNull
     public double humidity;
 
+    @NonNull
     public double pressure;
 
     @Ignore
@@ -68,6 +71,8 @@ public class PainRecord {
 
         }
     }
+
+    @Ignore
     public PainRecord(@NonNull String emailId, @NonNull int painIntensityLevel,
                       @NonNull String painLocation, @NonNull String moodLevel, @NonNull int stepsPerDay) {
         try {
@@ -84,4 +89,35 @@ public class PainRecord {
         }
     }
 
+    @Ignore
+    public PainRecord(@NonNull String emailId, int painIntensityLevel, @NonNull String painLocation, @NonNull String moodLevel, int stepsPerDay, double temperature, double humidity, double pressure) {
+
+        try {
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+            this.currentDate = formatter.parse(formatter.format(new Date()));
+            this.emailId = emailId;
+            this.painIntensityLevel = painIntensityLevel;
+            this.painLocation = painLocation;
+            this.moodLevel = moodLevel;
+            this.stepsPerDay = stepsPerDay;
+            this.temperature = temperature;
+            this.humidity = humidity;
+            this.pressure = pressure;
+        }
+        catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    public PainRecord(@NonNull String emailId, int painIntensityLevel, @NonNull String painLocation, @NonNull String moodLevel, int stepsPerDay, @NonNull Date currentDate, @NonNull  double temperature, @NonNull double humidity, @NonNull double pressure) {
+        this.emailId = emailId;
+        this.painIntensityLevel = painIntensityLevel;
+        this.painLocation = painLocation;
+        this.moodLevel = moodLevel;
+        this.stepsPerDay = stepsPerDay;
+        this.currentDate = currentDate;
+        this.temperature = temperature;
+        this.humidity = humidity;
+        this.pressure = pressure;
+    }
 }
