@@ -1,5 +1,11 @@
 package com.example.paindairy.fragment;
 
+import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.app.TimePickerDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,14 +15,21 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.paindairy.R;
+import com.example.paindairy.alarm.TimePickerFragment;
+import com.example.paindairy.alarm.AlertReceiver;
+import com.example.paindairy.alarm.NotificationHelper;
 import com.example.paindairy.databinding.PainDataEntryBinding;
 import com.example.paindairy.entity.PainRecord;
 import com.example.paindairy.entity.Weather;
@@ -29,9 +42,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 
+import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -40,7 +55,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class PainDataEntryFragment extends Fragment implements View.OnClickListener, SeekBar.OnSeekBarChangeListener{
+public class PainDataEntryFragment extends Fragment implements View.OnClickListener, SeekBar.OnSeekBarChangeListener {
     private static final String API_KEY = "af0cfc6611defe4fe50200aec8c78d50";
     private static final String KEYWORD = "melbourne";
 
@@ -81,8 +96,13 @@ public class PainDataEntryFragment extends Fragment implements View.OnClickListe
 
         painDataEntryBinding.deleteButton.setOnClickListener(this);
 
+        painDataEntryBinding.alarmSetter.setOnClickListener(this);
+
+        painDataEntryBinding.alarmCanceller.setOnClickListener(this);
+
         return view;
     }
+
 
 
     @Override
@@ -102,7 +122,21 @@ public class PainDataEntryFragment extends Fragment implements View.OnClickListe
         else if (v.getId() == R.id.deleteButton) {
             deleteRecords();
         }
+        else if (v.getId() == R.id.alarmSetter) {
+            alarmSetter();
+        }
+        else if (v.getId() == R.id.alarmCanceller) {
+            alarmCaneller();
+        }
     }
+
+    private void alarmSetter() {
+        DialogFragment timePicker = new TimePickerFragment();
+        if (getFragmentManager() != null) {
+            timePicker.show(getFragmentManager(), "time picker");
+        }
+    }
+
 
     private void deleteRecords() {
         painRecordViewModel.deleteAll();
@@ -325,5 +359,12 @@ public class PainDataEntryFragment extends Fragment implements View.OnClickListe
         painDataEntryBinding.currentTemperature.setText(decimalFormat.format(tempDouble));
         painDataEntryBinding.currentHumidity.setText(weather.getHumidity());
         painDataEntryBinding.currentPressure.setText(weather.getPressure());
+    }
+
+    private void alarmCaneller() {
+        AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(getActivity(), AlertReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 1, intent, 0);
+        alarmManager.cancel(pendingIntent);
     }
 }
