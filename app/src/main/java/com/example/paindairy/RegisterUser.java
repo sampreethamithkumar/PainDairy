@@ -5,8 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Patterns;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import com.example.paindairy.databinding.ActivityRegisterUserBinding;
@@ -17,7 +19,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class RegisterUser extends AppCompatActivity implements View.OnClickListener{
+public class RegisterUser extends AppCompatActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener{
 
     private ActivityRegisterUserBinding binding;
 
@@ -34,6 +36,8 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
 
         binding.appTitle.setOnClickListener(this);
         binding.registerButton.setOnClickListener(this);
+
+        binding.checkbox.setOnCheckedChangeListener(this);
     }
 
     @Override
@@ -50,6 +54,7 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
         String age = binding.ageEditText.getText().toString().trim();
         String email = binding.emailIdEditText.getText().toString().trim();
         String password = binding.passwordEditText.getText().toString().trim();
+        String confirmPassword = binding.passwordConfirmation.getText().toString().trim();
 
 
         if (fullName.isEmpty()) {
@@ -82,6 +87,14 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
             binding.passwordEditText.requestFocus();
             return;
         }
+        else if (!password.equals(confirmPassword)) {
+            binding.passwordEditText.setError("Password don't match");
+            binding.passwordConfirmation.setError("Password don't match");
+
+            binding.passwordEditText.requestFocus();
+            binding.passwordConfirmation.requestFocus();
+            return;
+        }
 
         binding.progressBar.setVisibility(View.VISIBLE);
         mAuth.createUserWithEmailAndPassword(email, password)
@@ -101,6 +114,7 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
                                     if (task.isSuccessful()) {
                                         binding.progressBar.setVisibility(View.GONE);
                                         Toast.makeText(RegisterUser.this, "User has been registered successfully", Toast.LENGTH_LONG).show();
+                                        startActivity(new Intent(RegisterUser.this, MainActivity.class));
                                     }
                                     else {
                                         Toast.makeText(RegisterUser.this, "User registration Failed", Toast.LENGTH_LONG).show();
@@ -117,4 +131,15 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
                 });
     }
 
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if (isChecked) {
+            binding.passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT);
+            binding.passwordConfirmation.setInputType(InputType.TYPE_CLASS_TEXT);
+        }
+        else {
+            binding.passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            binding.passwordConfirmation.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        }
+    }
 }

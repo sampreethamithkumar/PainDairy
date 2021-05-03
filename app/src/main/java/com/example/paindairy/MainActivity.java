@@ -5,8 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Patterns;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import com.example.paindairy.databinding.ActivityMainBinding;
@@ -17,7 +19,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener{
     private  ActivityMainBinding binding;
 
     private FirebaseAuth mAuth;
@@ -39,6 +41,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         binding.signUpText.setOnClickListener(this);
         binding.forgotPasswordText.setOnClickListener(this);
         binding.loginButton.setOnClickListener(this);
+
+        binding.checkbox.setOnCheckedChangeListener(this);
     }
 
     @Override
@@ -83,6 +87,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         });
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if (isChecked)
+            binding.passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT);
+        else
+            binding.passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
     }
 
     public boolean inputChecking(String email, String password) {
