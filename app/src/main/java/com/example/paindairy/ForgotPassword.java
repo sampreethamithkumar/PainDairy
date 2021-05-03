@@ -13,7 +13,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class ForgotPassword extends AppCompatActivity implements View.OnClickListener {
+public class ForgotPassword extends AppCompatActivity implements View.OnClickListener, OnCompleteListener<Void> {
     private ActivityForgotPasswordBinding binding;
 
     private FirebaseAuth mAuth;
@@ -51,19 +51,18 @@ public class ForgotPassword extends AppCompatActivity implements View.OnClickLis
         }
 
         binding.progressBar.setVisibility(View.VISIBLE);
-        mAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    Toast.makeText(ForgotPassword.this, "Check your email to reset your password", Toast.LENGTH_LONG).show();
-                    binding.progressBar.setVisibility(View.GONE);
-                }
-                else {
-                    Toast.makeText(ForgotPassword.this, "Something Wrong happened!", Toast.LENGTH_LONG).show();
-                    binding.progressBar.setVisibility(View.GONE);
-                }
+        mAuth.sendPasswordResetEmail(email).addOnCompleteListener(this);
+    }
 
-            }
-        });
+    @Override
+    public void onComplete(@NonNull Task<Void> task) {
+        if (task.isSuccessful()) {
+            Toast.makeText(ForgotPassword.this, "Check your email to reset your password", Toast.LENGTH_LONG).show();
+            binding.progressBar.setVisibility(View.GONE);
+        }
+        else {
+            Toast.makeText(ForgotPassword.this, "Something Wrong happened!", Toast.LENGTH_LONG).show();
+            binding.progressBar.setVisibility(View.GONE);
+        }
     }
 }

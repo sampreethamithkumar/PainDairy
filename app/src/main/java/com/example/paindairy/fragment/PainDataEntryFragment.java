@@ -366,5 +366,6 @@ public class PainDataEntryFragment extends Fragment implements View.OnClickListe
         Intent intent = new Intent(getActivity(), AlertReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 1, intent, 0);
         alarmManager.cancel(pendingIntent);
+        Toast.makeText(getContext(), "Alarm Cancelled", Toast.LENGTH_LONG).show();
     }
 }

@@ -17,7 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, OnCompleteListener<AuthResult>{
     private  ActivityMainBinding binding;
 
     private FirebaseAuth mAuth;
@@ -60,29 +60,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         binding.progressBar.setVisibility(View.VISIBLE);
 
-        mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-
-                if (task.isSuccessful()) {
-                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-                    if (user.isEmailVerified()) {
-                        binding.progressBar.setVisibility(View.GONE);
-                        startActivity(new Intent(MainActivity.this, Dashboard.class));
-                    }
-                    else {
-                        user.sendEmailVerification();
-                        Toast.makeText(MainActivity.this, "Check your email to verify your account!", Toast.LENGTH_LONG).show();
-                        binding.progressBar.setVisibility(View.GONE);
-                    }
-                }
-                else {
-                    Toast.makeText(MainActivity.this, "Failed to login! Please check your credentials", Toast.LENGTH_LONG).show();
-                    binding.progressBar.setVisibility(View.GONE);
-                }
-            }
-        });
+        mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(this);
     }
 
     public boolean inputChecking(String email, String password) {
@@ -102,5 +80,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return false;
         }
         return true;
+    }
+
+    @Override
+    public void onComplete(@NonNull Task<AuthResult> task) {
+        if (task.isSuccessful()) {
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+            if (user.isEmailVerified()) {
+                binding.progressBar.setVisibility(View.GONE);
+                startActivity(new Intent(MainActivity.this, Dashboard.class));
+            }
+            else {
+                user.sendEmailVerification();
+                Toast.makeText(MainActivity.this, "Check your email to verify your account!", Toast.LENGTH_LONG).show();
+                binding.progressBar.setVisibility(View.GONE);
+            }
+        }
+        else {
+            Toast.makeText(MainActivity.this, "Failed to login! Please check your credentials", Toast.LENGTH_LONG).show();
+            binding.progressBar.setVisibility(View.GONE);
+        }
     }
 }

@@ -50,15 +50,16 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the View for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         addBinding = HomeFragmentBinding.inflate(inflater, container, false);
         View view = addBinding.getRoot();
         mAuth = FirebaseAuth.getInstance();
+
         retrofitInterface = RetrofitClient.getRetrofitService();
+
         getUserDetails();
         getWeatherDetails();
+
         return view;
     }
     @Override

@@ -36,15 +36,6 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
     private ActivityDashboardBinding binding;
     private AppBarConfiguration mAppBarConfiguration;
 
-    private FirebaseUser user;
-    private DatabaseReference reference;
-
-    private String userID;
-
-    private FirebaseAuth mAuth;
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,20 +57,11 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         NavigationUI.setupWithNavController(binding.navView, navController);
 
         NavigationUI.setupWithNavController(binding.appBar.toolbar, navController,mAppBarConfiguration);
-//        mAuth = FirebaseAuth.getInstance();
-//
-//        binding.signOut.setOnClickListener(this);
-//
-//        getUserDetails();
     }
 
 
     @Override
     public void onClick(View v) {
-//        if (v.getId() == R.id.signOut) {
-//            FirebaseAuth.getInstance().signOut();
-//            startActivity(new Intent(Dashboard.this, MainActivity.class));
-//        }
 
     }
 
@@ -88,7 +70,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
-        calendar.set(Calendar.MINUTE, minute);
+        calendar.set(Calendar.MINUTE, minute - 2);
         calendar.set(Calendar.SECOND, 0);
 
         startAlarm(calendar);
