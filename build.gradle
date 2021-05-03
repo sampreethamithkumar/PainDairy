@@ -20,6 +20,18 @@ allprojects {
         maven {
             url 'https://maven.google.com'
         }
+        maven {
+            url 'https://api.mapbox.com/downloads/v2/releases/maven'
+            authentication {
+                basic(BasicAuthentication)
+            }
+            credentials {
+                // Do not change the username below.
+                username = 'mapbox'
+// this password refers to the mapbox token you entered in gradle.properties
+                password = project.properties['MAPBOX_DOWNLOADS_TOKEN'] ?: ""
+            }
+        }
     }
 }
 

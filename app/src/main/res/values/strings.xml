@@ -2,4 +2,5 @@
     <string name="app_name">Pain Dairy</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="mapbox_access_token"> pk.eyJ1Ijoic2FtcHJlZXRoYW1pdGhrdW1hciIsImEiOiJja283dDVmMHAxYXYwMm5vbndreTg3eW0wIn0.MJvA80Ka1B4yDAbgmHyn5A</string>
 </resources>
