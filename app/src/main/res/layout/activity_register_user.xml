@@ -15,7 +15,7 @@
         tools:layout_editor_absoluteY="109dp"
         android:textSize="50dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="20dp"
         android:textColor="@color/black"
         android:textStyle="bold"
         android:fontFamily="sans-serif-black"
@@ -27,7 +27,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_below="@+id/appTitle"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="50dp"
         android:hint="Full Name"
         />
     <EditText
@@ -61,14 +61,36 @@
         android:inputType="textPassword"
         android:hint="Password"
         />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/passwordConfirmation"
+        android:layout_below="@+id/passwordEditText"
+        android:hint="Re-enter Password"
+        android:layout_marginTop="30dp"
+        android:inputType="textPassword"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/checkbox"
+        android:text="Show Password"
+        android:layout_below="@+id/passwordConfirmation"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"/>
+
+
     <Button
         android:id="@+id/registerButton"
         android:layout_width="200dp"
         android:layout_height="50dp"
         android:layout_centerHorizontal="true"
         android:text="Register"
-        android:layout_below="@+id/passwordEditText"
-        android:layout_margin="40dp"
+        android:layout_below="@+id/checkbox"
+        android:layout_margin="30dp"
         />
 
     <ProgressBar
