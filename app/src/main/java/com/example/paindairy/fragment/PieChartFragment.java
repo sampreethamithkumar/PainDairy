@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.anychart.AnyChart;
 import com.anychart.AnyChartView;
@@ -15,15 +17,23 @@ import com.anychart.charts.Pie;
 import com.example.paindairy.R;
 import com.example.paindairy.databinding.AccountFragmentBinding;
 import com.example.paindairy.databinding.FragmentPieBinding;
+import com.example.paindairy.entity.PainRecord;
+import com.example.paindairy.viewmodel.PainRecordViewModel;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PieChartFragment extends Fragment {
+public class PieChartFragment extends Fragment implements Observer<List<PainRecord>> {
     private FragmentPieBinding pieBinding;
 
-    private String[] months = {"Jan" , "Feb", "March"};
-    private int[] earning = {200,300,400};
+    private FirebaseUser firebaseUser;
+
+    private PainRecordViewModel painRecordViewModel;
+
+    final private String[] painLocations = {"Abdomen" , "Back", "Elbows", "Facial", "Hips", "Jaw", "Knees", "Neck" , "Shins", "Shoulder"};
+    private int[] painLocationCount = new int[painLocations.length];
 
 
     @Override
@@ -31,8 +41,13 @@ public class PieChartFragment extends Fragment {
         pieBinding = FragmentPieBinding.inflate(inflater,container,false);
         View view = pieBinding.getRoot();
 
-        setupPieChart();
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
+        painRecordViewModel = new ViewModelProvider(this).get(PainRecordViewModel.class);
+
+        painRecordViewModel.getAllPainRecords().observe(getViewLifecycleOwner(), this);
+
+        
        return view;
     }
 
@@ -41,12 +56,41 @@ public class PieChartFragment extends Fragment {
         List<DataEntry> dataEntries = new ArrayList<>();
 
 
-        for (int i = 0; i < months.length; i++) {
-            dataEntries.add(new ValueDataEntry(months[i], earning[i]));
+        for (int i = 0; i < painLocations.length; i++) {
+            dataEntries.add(new ValueDataEntry(painLocations[i], painLocationCount[i]));
         }
 
         pie.data(dataEntries);
         pieBinding.anyChartView.setChart(pie);
 
+    }
+
+    @Override
+    public void onChanged(List<PainRecord> painRecords) {
+
+        for (PainRecord painRecord : painRecords)
+            if (painRecord.emailId.equals(firebaseUser.getEmail()))
+                if (painRecord.painLocation.equals("Abdomen"))
+                    painLocationCount[0] += 1;
+                else if (painRecord.painLocation.equals("Back"))
+                    painLocationCount[1] += 1;
+                else if (painRecord.painLocation.equals("Elbows"))
+                    painLocationCount[2] += 1;
+                else if (painRecord.painLocation.equals("Facial"))
+                    painLocationCount[3] += 1;
+                else if (painRecord.painLocation.equals("Hips"))
+                    painLocationCount[4] += 1;
+                else if (painRecord.painLocation.equals("Jaw"))
+                    painLocationCount[5] += 1;
+                else if (painRecord.painLocation.equals("Knees"))
+                    painLocationCount[6] += 1;
+                else if (painRecord.painLocation.equals("Neck"))
+                    painLocationCount[7] += 1;
+                else if (painRecord.painLocation.equals("Shins"))
+                    painLocationCount[8] += 1;
+                else if (painRecord.painLocation.equals("Shoulders"))
+                    painLocationCount[9] += 1;
+
+        setupPieChart();
     }
 }
