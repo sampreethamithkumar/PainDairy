@@ -4,9 +4,22 @@
     >
 
     <TextView
+        android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Pie Chart Fragment"
-        android:layout_centerInParent="true"/>
+        android:text="Pain Location Pie Chart"
+        android:layout_centerHorizontal="true"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:textSize="30dp"
+        android:layout_marginTop="20dp" />
+
+
+    <com.anychart.AnyChartView
+        android:id="@+id/anyChartView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:layout_below="@+id/title"/>
 
 </RelativeLayout>

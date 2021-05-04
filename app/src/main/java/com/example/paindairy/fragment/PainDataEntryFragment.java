@@ -159,16 +159,16 @@ public class PainDataEntryFragment extends Fragment implements View.OnClickListe
 
     public void painLocationSpinner() {
         List<String> locations = new ArrayList<>();
-        locations.add("Back");
-        locations.add("Neck");
-        locations.add("Knees");
-        locations.add("Hips");
         locations.add("Abdomen");
+        locations.add("Back");
         locations.add("Elbows");
-        locations.add("Shoulders");
-        locations.add("Shins");
-        locations.add("Jaw");
         locations.add("Facial");
+        locations.add("Hips");
+        locations.add("Jaw");
+        locations.add("Knees");
+        locations.add("Neck");
+        locations.add("Shins");
+        locations.add("Shoulders");
 
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item,locations);
         painDataEntryBinding.painLocationSpinner.setAdapter(arrayAdapter);
