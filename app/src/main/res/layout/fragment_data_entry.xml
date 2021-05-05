@@ -109,91 +109,15 @@
         android:text="10000"
         />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center_horizontal"
-        android:id="@+id/weatherLinerLayout"
-        android:layout_below="@+id/stepsTakenEditText"
-        android:layout_marginTop="20dp"
-        >
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Location: Melbourne" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/temperature"
-            android:orientation="horizontal"
-            android:gravity="center" android:layout_marginTop="20dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Temperature: "/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/currentTemperature"
-                android:text="Loading..."/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/pressure"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:layout_marginTop="10dp"
-            >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Pressure: "/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/currentPressure"
-                android:text="Loading..."/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/humidity"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:layout_marginTop="10dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Humidity: "/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/currentHumidity"
-                android:text="Loading..."/>
-
-        </LinearLayout>
-
-    </LinearLayout>
 
     <Button
         android:id="@+id/saveButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/weatherLinerLayout"
         android:layout_marginLeft="40dp"
         android:layout_marginTop="30dp"
+        android:layout_below="@id/stepsTakenEditText"
         android:text="Save" />
 
     <Button
@@ -201,7 +125,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/deleteButton"
         android:layout_toRightOf="@id/saveButton"
-        android:layout_below="@id/weatherLinerLayout"
+        android:layout_below="@id/stepsTakenEditText"
         android:layout_marginTop="30dp"
         android:layout_marginLeft="30dp"
         android:text="Delete"/>
@@ -211,8 +135,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:layout_below="@+id/weatherLinerLayout"
         android:layout_alignParentRight="true"
+        android:layout_below="@id/stepsTakenEditText"
         android:layout_marginRight="40dp"
         android:text="Edit" />
 

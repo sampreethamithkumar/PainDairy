@@ -27,6 +27,7 @@ import com.example.paindairy.databinding.PainDataEntryBinding;
 import com.example.paindairy.entity.PainRecord;
 import com.example.paindairy.entity.Weather;
 import com.example.paindairy.viewmodel.PainRecordViewModel;
+import com.example.paindairy.viewmodel.SharedViewModel;
 import com.example.paindairy.weatherApi.Main;
 import com.example.paindairy.weatherApi.RetrofitClient;
 import com.example.paindairy.weatherApi.RetrofitInterface;
@@ -39,6 +40,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -46,19 +48,17 @@ import retrofit2.Response;
 
 
 public class DataEntryFragment extends Fragment implements View.OnClickListener, SeekBar.OnSeekBarChangeListener{
-    private static final String API_KEY = "af0cfc6611defe4fe50200aec8c78d50";
-    private static final String KEYWORD = "melbourne";
-
     private FragmentDataEntryBinding fragmentDataEntryBinding;
+
     private PainRecordViewModel painRecordViewModel;
 
     private FirebaseUser firebaseUser;
 
-    private int lastId;
-
-    private RetrofitInterface retrofitInterface;
-
     private PainRecord currentDayPainRecord;
+
+    private SharedViewModel model;
+
+    private Weather weather;
 
 
     @Override
@@ -70,8 +70,7 @@ public class DataEntryFragment extends Fragment implements View.OnClickListener,
 
         painRecordViewModel = new ViewModelProvider(this).get(PainRecordViewModel.class);
 
-        retrofitInterface = RetrofitClient.getRetrofitService();
-        getWeatherDetails();
+        model = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
 
         painLocationSpinner();
         moodLevelSpinner();
@@ -158,23 +157,6 @@ public class DataEntryFragment extends Fragment implements View.OnClickListener,
         fragmentDataEntryBinding.moodLevelSpinner.setAdapter(arrayAdapter);
     }
 
-    public void getData() {
-        painRecordViewModel = new ViewModelProvider(this).get(PainRecordViewModel.class);
-
-        painRecordViewModel.getAllPainRecords().observe(this, new Observer<List<PainRecord>>() {
-            @Override
-            public void onChanged(List<PainRecord> painRecords) {
-                StringBuffer allPainRecords = new StringBuffer("");
-                for (PainRecord painRecord : painRecords) {
-                    StringBuffer userDetails = new StringBuffer(painRecord.uid + " " + painRecord.emailId + " "
-                            + painRecord.painIntensityLevel + " " + painRecord.currentDate + " " + painRecord.stepsPerDay + " "
-                            + painRecord.moodLevel + " " + painRecord.painLocation );
-                    allPainRecords = allPainRecords.append(System.getProperty("line.separator") + userDetails.toString());
-                }
-                fragmentDataEntryBinding.textViewRead.setText("All data:" + allPainRecords.toString());
-            }
-        });
-    }
 
     private void enableOrDisableButton() {
         String userEmailId = firebaseUser.getEmail();
@@ -216,9 +198,8 @@ public class DataEntryFragment extends Fragment implements View.OnClickListener,
         String painLocation = fragmentDataEntryBinding.painLocationSpinner.getSelectedItem().toString();
         String moodLevel = fragmentDataEntryBinding.moodLevelSpinner.getSelectedItem().toString();
         String stepsTaken = fragmentDataEntryBinding.stepsTakenEditText.getText().toString();
-        double temp = Double.parseDouble(fragmentDataEntryBinding.currentTemperature.getText().toString());
-        double humidity = Double.parseDouble(fragmentDataEntryBinding.currentHumidity.getText().toString());
-        double pressure = Double.parseDouble(fragmentDataEntryBinding.currentPressure.getText().toString());
+        int painLevelInt = Integer.parseInt(painLevel);
+        int stepsTakenInt = Integer.parseInt(stepsTaken);
 
         try{
             Integer.parseInt(stepsTaken);
@@ -230,12 +211,12 @@ public class DataEntryFragment extends Fragment implements View.OnClickListener,
         }
 
         if ((!painLevel.isEmpty() && painLevel != null) && (!painLocation.isEmpty() && painLocation != null) && (!moodLevel.isEmpty() && moodLevel != null)) {
-            int painLevelInt = Integer.parseInt(painLevel);
-            int stepsTakenInt = Integer.parseInt(stepsTaken);
             try {
                 SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
                 Date currentDate = formatter.parse(formatter.format(new Date()));
-                PainRecord painRecord = new PainRecord(firebaseUser.getEmail(), painLevelInt, painLocation, moodLevel, stepsTakenInt, currentDate,temp, humidity, pressure);
+
+                weather = getWeather();
+                PainRecord painRecord = new PainRecord(firebaseUser.getEmail(), painLevelInt, painLocation, moodLevel, stepsTakenInt, currentDate,weather.getTemperature(), weather.getHumidity(), weather.getPressure());
                 painRecordViewModel.insert(painRecord);
                 Toast.makeText(getActivity(), "Pain Record Inserted successfully",Toast.LENGTH_LONG).show();
                 fragmentDataEntryBinding.saveButton.setEnabled(false);
@@ -245,30 +226,17 @@ public class DataEntryFragment extends Fragment implements View.OnClickListener,
             }
         }
         else
-            Toast.makeText(getContext(), "Unexceptional error occured inseting the record", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "Unexceptional error occured inserting the record", Toast.LENGTH_LONG).show();
     }
 
-    public void editPainRecord() {
-
-        /**
-         * Getting last Id of the Pain Record
-         */
-        painRecordViewModel.getLastId(firebaseUser.getEmail()).observe(this, new Observer<Integer>() {
-            @Override
-            public void onChanged(Integer integer) {
-                lastId = integer;
-            }
-        });
-
+    private void editPainRecord() {
 
         String painLevel = fragmentDataEntryBinding.seekBarCurrentValue.getText().toString();
         String painLocation = fragmentDataEntryBinding.painLocationSpinner.getSelectedItem().toString();
         String moodLevel = fragmentDataEntryBinding.moodLevelSpinner.getSelectedItem().toString();
         String stepsTaken = fragmentDataEntryBinding.stepsTakenEditText.getText().toString();
-        double temp = Double.parseDouble(fragmentDataEntryBinding.currentTemperature.getText().toString());
-        double humidity = Double.parseDouble(fragmentDataEntryBinding.currentHumidity.getText().toString());
-        double pressure = Double.parseDouble(fragmentDataEntryBinding.currentPressure.getText().toString());
-
+        int painLevelInt = Integer.parseInt(painLevel);
+        int stepsTakenInt = Integer.parseInt(stepsTaken);
 
         try{
             Integer.parseInt(stepsTaken);
@@ -280,15 +248,10 @@ public class DataEntryFragment extends Fragment implements View.OnClickListener,
         }
 
         if ((!painLevel.isEmpty() && painLevel != null) && (!painLocation.isEmpty() && painLocation != null) && (!moodLevel.isEmpty() && moodLevel != null)) {
-            int painLevelInt = Integer.parseInt(painLevel);
-            int stepsTakenInt = Integer.parseInt(stepsTaken);
             currentDayPainRecord.painIntensityLevel = painLevelInt;
             currentDayPainRecord.painLocation = painLocation;
             currentDayPainRecord.moodLevel = moodLevel;
             currentDayPainRecord.stepsPerDay = stepsTakenInt;
-            currentDayPainRecord.temperature = temp;
-            currentDayPainRecord.humidity = humidity;
-            currentDayPainRecord.pressure = pressure;
 
             try {
                 painRecordViewModel.update(currentDayPainRecord);
@@ -297,40 +260,19 @@ public class DataEntryFragment extends Fragment implements View.OnClickListener,
             catch (Exception exception) {
                 Toast.makeText(getActivity(), "Unexpected error occured!", Toast.LENGTH_LONG).show();
             }
-
         }
         else
             Toast.makeText(getActivity(), "Please make changes to the value before editing", Toast.LENGTH_LONG).show();
     }
 
-    private void getWeatherDetails() {
-        Call<WeatherAPI> callAsync = retrofitInterface.weatherApi(API_KEY,KEYWORD);
-
-        callAsync.enqueue(new Callback<WeatherAPI>() {
+    private Weather getWeather() {
+        final Weather[] api = new Weather[1];
+        model.getWeatherApi().observe(getViewLifecycleOwner(), new Observer<Map<String, Double>>() {
             @Override
-            public void onResponse(Call<WeatherAPI> call, Response<WeatherAPI> response) {
-                if (response.isSuccessful()) {
-                    Main main = response.body().main;
-                    Weather weather = new Weather(main.getTemp(), main.getPressure(), main.getHumidity());
-
-                    displayWeatherDetails(weather);
-                }
-                else
-                    Log.i("Error", "Response Failed");
-            }
-
-            @Override
-            public void onFailure(Call<WeatherAPI> call, Throwable t) {
-                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT);
+            public void onChanged(Map<String, Double> weatherApi) {
+                api[0] = new Weather(weatherApi.get("temperature"), weatherApi.get("pressure"), weatherApi.get("humidity"));
             }
         });
-    }
-
-    private void displayWeatherDetails(Weather weather) {
-        double tempDouble = Double.parseDouble(weather.getTemperature()) - 273.15;
-        DecimalFormat decimalFormat = new DecimalFormat("##.##");
-        fragmentDataEntryBinding.currentTemperature.setText(decimalFormat.format(tempDouble));
-        fragmentDataEntryBinding.currentHumidity.setText(weather.getHumidity());
-        fragmentDataEntryBinding.currentPressure.setText(weather.getPressure());
+        return api[0];
     }
 }

@@ -9,10 +9,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.paindairy.entity.User;
 import com.example.paindairy.databinding.HomeFragmentBinding;
 import com.example.paindairy.entity.Weather;
+import com.example.paindairy.viewmodel.SharedViewModel;
 import com.example.paindairy.weatherApi.Main;
 import com.example.paindairy.weatherApi.RetrofitClient;
 import com.example.paindairy.weatherApi.RetrofitInterface;
@@ -26,6 +29,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.DecimalFormat;
+import java.util.HashMap;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -45,6 +50,8 @@ public class HomeFragment extends Fragment {
 
     private RetrofitInterface retrofitInterface;
 
+    private SharedViewModel model;
+
     public HomeFragment(){
 
     }
@@ -55,6 +62,9 @@ public class HomeFragment extends Fragment {
         // Inflate the View for this fragment
         addBinding = HomeFragmentBinding.inflate(inflater, container, false);
         View view = addBinding.getRoot();
+
+        model = new ViewModelProvider(getActivity()).get(SharedViewModel.class);
+
         mAuth = FirebaseAuth.getInstance();
         retrofitInterface = RetrofitClient.getRetrofitService();
         getUserDetails();
@@ -100,9 +110,11 @@ public class HomeFragment extends Fragment {
             public void onResponse(Call<WeatherAPI> call, Response<WeatherAPI> response) {
                 if (response.isSuccessful()) {
                     Main main = response.body().main;
-                    Weather weather = new Weather(main.getTemp(), main.getPressure(), main.getHumidity());
 
-                    displayWeatherDetails(weather);
+                    double tempDouble = Double.parseDouble(main.getTemp()) - 273.15;
+                    DecimalFormat decimalFormat = new DecimalFormat("##.##");
+                    model.setWeatherApi(Double.parseDouble(decimalFormat.format(tempDouble)), Double.parseDouble(main.getPressure()), Double.parseDouble(main.getHumidity()));
+                    displayWeatherDetails();
                 }
                 else
                     Log.i("Error", "Response Failed");
@@ -115,12 +127,15 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    private void displayWeatherDetails(Weather weather) {
-        double tempDouble = Double.parseDouble(weather.getTemperature()) - 273.15;
-        DecimalFormat decimalFormat = new DecimalFormat("##.##");
-        addBinding.currentTemperature.setText(decimalFormat.format(tempDouble) + " C");
-        addBinding.currentHumidity.setText(weather.getHumidity() + "%");
-        addBinding.currentPressure.setText(weather.getPressure() + " Pa");
+    private void displayWeatherDetails() {
+        model.getWeatherApi().observe(getViewLifecycleOwner(), new Observer<Map<String, Double>>() {
+            @Override
+            public void onChanged(Map<String, Double> weather) {
+                addBinding.currentTemperature.setText(Double.toString(weather.get("temperature")) + " C");
+                addBinding.currentHumidity.setText(Double.toString(weather.get("humidity")) + "%");
+                addBinding.currentPressure.setText(Double.toString(weather.get("pressure")) + " pa");
+            }
+        });
     }
 
 }

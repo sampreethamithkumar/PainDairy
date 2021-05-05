@@ -2,37 +2,37 @@ package com.example.paindairy.entity;
 
 public class Weather {
 
-    private String temperature;
-    private String pressure;
-    private String humidity;
+    private double temperature;
+    private double pressure;
+    private double humidity;
 
-    public Weather(String temperature, String pressure, String humidity) {
+    public Weather(double temperature, double pressure, double humidity) {
         this.temperature = temperature;
         this.pressure = pressure;
         this.humidity = humidity;
     }
 
-    public String getTemperature() {
+    public double getTemperature() {
         return temperature;
     }
 
-    public void setTemperature(String temperature) {
-        this.temperature = temperature;
-    }
-
-    public String getPressure() {
+    public double getPressure() {
         return pressure;
     }
 
-    public void setPressure(String pressure) {
-        this.pressure = pressure;
-    }
-
-    public String getHumidity() {
+    public double getHumidity() {
         return humidity;
     }
 
-    public void setHumidity(String humidity) {
+    public void setTemperature(double temperature) {
+        this.temperature = temperature;
+    }
+
+    public void setPressure(double pressure) {
+        this.pressure = pressure;
+    }
+
+    public void setHumidity(double humidity) {
         this.humidity = humidity;
     }
 }
