@@ -320,14 +320,14 @@ public class PainDataEntryFragment extends Fragment implements View.OnClickListe
                         painRecord.humidity = humidity;
                         painRecord.pressure = pressure;
                         painRecordViewModel.update(painRecord);
-                        Toast.makeText(getContext(), "Pain Record Updated", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), "Pain Record Updated", Toast.LENGTH_LONG).show();
                     }
                     return painRecord;
                 });
             }
         }
         else
-            Toast.makeText(getContext(), "Please make changes to the value before editing", Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), "Please make changes to the value before editing", Toast.LENGTH_LONG).show();
     }
 
     private void getWeatherDetails() {
