@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.DataEntryFragment">
+
+    <TextView
+        android:id="@+id/seekBarTextView"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pain Intensity Level: "
+        />
+
+    <TextView
+        android:id="@+id/seekBarCurrentValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:layout_toRightOf="@+id/seekBarTextView"
+        android:layout_marginTop="20dp"/>
+
+    <SeekBar
+        android:id="@+id/seekBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="10"
+        android:min="1"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/seekBarTextView"/>
+
+    <TextView
+        android:id="@+id/seekBarMinValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:layout_marginLeft="12dp"
+        android:layout_below="@+id/seekBar"
+        />
+
+    <TextView
+        android:id="@+id/seekBarMaxValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/seekBar"
+        android:text="10"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="12dp"
+        />
+
+    <TextView
+        android:id="@+id/painLocationTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/seekBarMinValue"
+        android:text="Pain Location"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        />
+
+    <Spinner
+        android:id="@+id/painLocationSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_below="@+id/painLocationTextView"
+        android:layout_marginTop="10dp" />
+
+    <TextView
+        android:id="@+id/moodLevelTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/painLocationSpinner"
+        android:text="Mood Level"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        />
+
+    <Spinner
+        android:id="@+id/moodLevelSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_below="@+id/moodLevelTextView"
+        android:layout_marginTop="10dp" />
+
+    <TextView
+        android:id="@+id/stepsTakenTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Steps Taken"
+        android:layout_below="@+id/moodLevelSpinner"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        />
+
+    <EditText
+        android:id="@+id/stepsTakenEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/stepsTakenTextView"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:text="10000"
+        />
+
+
+
+    <Button
+        android:id="@+id/saveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="30dp"
+        android:layout_below="@id/stepsTakenEditText"
+        android:text="Save" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/deleteButton"
+        android:layout_toRightOf="@id/saveButton"
+        android:layout_below="@id/stepsTakenEditText"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="30dp"
+        android:text="Delete"/>
+
+    <Button
+        android:id="@+id/editButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/stepsTakenEditText"
+        android:layout_marginRight="40dp"
+        android:text="Edit" />
+
+    <TextView
+        android:id="@+id/textView_read"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:layout_below="@+id/saveButton"/>
+
+
+</RelativeLayout>

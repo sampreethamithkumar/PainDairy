@@ -114,7 +114,7 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
                                     if (task.isSuccessful()) {
                                         binding.progressBar.setVisibility(View.GONE);
                                         Toast.makeText(RegisterUser.this, "User has been registered successfully", Toast.LENGTH_LONG).show();
-                                        startActivity(new Intent(RegisterUser.this, MainActivity.class));
+//                                        startActivity(new Intent(RegisterUser.this, MainActivity.class));
                                     }
                                     else {
                                         Toast.makeText(RegisterUser.this, "User registration Failed", Toast.LENGTH_LONG).show();
@@ -129,6 +129,9 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
                         }
                     }
                 });
+        FirebaseAuth.getInstance().signOut();
+        startActivity(new Intent(RegisterUser.this, MainActivity.class));
+
     }
 
     @Override

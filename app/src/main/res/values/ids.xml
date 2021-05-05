@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="seekBarTextView" type="id" />
+    <item name="seekBarCurrentValue" type="id" />
+    <item name="seekBar" type="id" />
+    <item name="saveButton" type="id" />
+    <item name="deleteButton" type="id" />
+    <item name="textView_read" type="id" />
+    <item name="stepsTakenEditText" type="id" />
+    <item name="moodLevelSpinner" type="id" />
+    <item name="painLocationSpinner" type="id" />
+    <item name="seekBarMinValue" type="id" />
+    <item name="seekBarMaxValue" type="id" />
+    <item name="editButton" type="id" />
+</resources>

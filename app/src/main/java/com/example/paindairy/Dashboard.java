@@ -88,7 +88,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
-        calendar.set(Calendar.MINUTE, minute);
+        calendar.set(Calendar.MINUTE, minute - 2);
         calendar.set(Calendar.SECOND, 0);
 
         startAlarm(calendar);
