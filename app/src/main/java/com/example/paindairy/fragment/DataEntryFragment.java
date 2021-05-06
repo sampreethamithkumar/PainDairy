@@ -181,6 +181,7 @@ public class DataEntryFragment extends Fragment implements View.OnClickListener,
                                 fragmentDataEntryBinding.saveButton.setEnabled(true);
                             }
                         else{
+                            alarmSetter();
                             fragmentDataEntryBinding.editButton.setEnabled(false);
                             fragmentDataEntryBinding.saveButton.setEnabled(true);
                         }
@@ -190,6 +191,13 @@ public class DataEntryFragment extends Fragment implements View.OnClickListener,
         }
         catch (Exception exception) {
             exception.printStackTrace();
+        }
+    }
+
+    private void alarmSetter() {
+        DialogFragment timePicker = new TimePickerFragment();
+        if (getFragmentManager() != null) {
+            timePicker.show(getFragmentManager(), "time picker");
         }
     }
 
