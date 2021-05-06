@@ -198,11 +198,16 @@ public class DataEntryFragment extends Fragment implements View.OnClickListener,
         String painLocation = fragmentDataEntryBinding.painLocationSpinner.getSelectedItem().toString();
         String moodLevel = fragmentDataEntryBinding.moodLevelSpinner.getSelectedItem().toString();
         String stepsTaken = fragmentDataEntryBinding.stepsTakenEditText.getText().toString();
-        int painLevelInt = Integer.parseInt(painLevel);
-        int stepsTakenInt = Integer.parseInt(stepsTaken);
+        String stepsGoal = fragmentDataEntryBinding.stepsGoalEditText.getText().toString();
+        int painLevelInt;
+        int stepsTakenInt;
+        int stepsGoalInt;
+
 
         try{
-            Integer.parseInt(stepsTaken);
+            painLevelInt = Integer.parseInt(painLevel);
+            stepsTakenInt = Integer.parseInt(stepsTaken);
+            stepsGoalInt = Integer.parseInt(stepsGoal);
         }
         catch (Exception exception) {
             fragmentDataEntryBinding.stepsTakenEditText.setError("Should be Numbers only");
@@ -216,7 +221,7 @@ public class DataEntryFragment extends Fragment implements View.OnClickListener,
                 Date currentDate = formatter.parse(formatter.format(new Date()));
 
                 weather = getWeather();
-                PainRecord painRecord = new PainRecord(firebaseUser.getEmail(), painLevelInt, painLocation, moodLevel, stepsTakenInt, currentDate,weather.getTemperature(), weather.getHumidity(), weather.getPressure());
+                PainRecord painRecord = new PainRecord(firebaseUser.getEmail(), painLevelInt, painLocation, moodLevel, stepsTakenInt, stepsGoalInt ,currentDate,weather.getTemperature(), weather.getHumidity(), weather.getPressure());
                 painRecordViewModel.insert(painRecord);
                 Toast.makeText(getActivity(), "Pain Record Inserted successfully",Toast.LENGTH_LONG).show();
                 fragmentDataEntryBinding.saveButton.setEnabled(false);
@@ -235,11 +240,16 @@ public class DataEntryFragment extends Fragment implements View.OnClickListener,
         String painLocation = fragmentDataEntryBinding.painLocationSpinner.getSelectedItem().toString();
         String moodLevel = fragmentDataEntryBinding.moodLevelSpinner.getSelectedItem().toString();
         String stepsTaken = fragmentDataEntryBinding.stepsTakenEditText.getText().toString();
-        int painLevelInt = Integer.parseInt(painLevel);
-        int stepsTakenInt = Integer.parseInt(stepsTaken);
+        String stepsGoal = fragmentDataEntryBinding.stepsGoalEditText.getText().toString();
+        int painLevelInt;
+        int stepsTakenInt;
+        int stepsGoalInt;
+
 
         try{
-            Integer.parseInt(stepsTaken);
+            painLevelInt = Integer.parseInt(painLevel);
+            stepsTakenInt = Integer.parseInt(stepsTaken);
+            stepsGoalInt = Integer.parseInt(stepsGoal);
         }
         catch (Exception exception) {
             fragmentDataEntryBinding.stepsTakenEditText.setError("Should be Numbers only");
@@ -252,6 +262,7 @@ public class DataEntryFragment extends Fragment implements View.OnClickListener,
             currentDayPainRecord.painLocation = painLocation;
             currentDayPainRecord.moodLevel = moodLevel;
             currentDayPainRecord.stepsPerDay = stepsTakenInt;
+            currentDayPainRecord.stepGoal = stepsGoalInt;
 
             try {
                 painRecordViewModel.update(currentDayPainRecord);

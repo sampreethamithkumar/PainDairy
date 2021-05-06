@@ -109,7 +109,26 @@
         android:text="10000"
         />
 
+    <TextView
+        android:id="@+id/stepGoal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Steps Goal"
+        android:layout_below="@+id/stepsTakenEditText"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        />
 
+    <EditText
+        android:id="@+id/stepsGoalEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/stepGoal"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:text="10000"
+        />
 
     <Button
         android:id="@+id/saveButton"
@@ -117,7 +136,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="40dp"
         android:layout_marginTop="30dp"
-        android:layout_below="@id/stepsTakenEditText"
+        android:layout_below="@+id/stepsGoalEditText"
         android:text="Save" />
 
     <Button
@@ -125,7 +144,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/deleteButton"
         android:layout_toRightOf="@id/saveButton"
-        android:layout_below="@id/stepsTakenEditText"
+        android:layout_below="@+id/stepsGoalEditText"
         android:layout_marginTop="30dp"
         android:layout_marginLeft="30dp"
         android:text="Delete"/>
@@ -136,7 +155,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:layout_alignParentRight="true"
-        android:layout_below="@id/stepsTakenEditText"
+        android:layout_below="@+id/stepsGoalEditText"
         android:layout_marginRight="40dp"
         android:text="Edit" />
 

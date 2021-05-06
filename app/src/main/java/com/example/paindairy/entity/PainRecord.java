@@ -12,7 +12,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Entity
-public class PainRecord {
+public class
+PainRecord {
     @PrimaryKey (autoGenerate = true)
     public int uid;
 
@@ -35,6 +36,10 @@ public class PainRecord {
     @ColumnInfo(name = "steps_per_day")
     @NonNull
     public int stepsPerDay;
+
+    @ColumnInfo(name = "step_goal", defaultValue = "10000")
+    @NonNull
+    public int stepGoal;
 
     @ColumnInfo(name = "current_date")
     @NonNull
@@ -109,7 +114,7 @@ public class PainRecord {
         }
     }
 
-    public PainRecord(@NonNull String emailId, int painIntensityLevel, @NonNull String painLocation, @NonNull String moodLevel, int stepsPerDay, @NonNull Date currentDate, @NonNull  double temperature, @NonNull double humidity, @NonNull double pressure) {
+    public PainRecord(@NonNull String emailId, int painIntensityLevel, @NonNull String painLocation, @NonNull String moodLevel, int stepsPerDay, int stepGoal , @NonNull Date currentDate, @NonNull  double temperature, @NonNull double humidity, @NonNull double pressure) {
         this.emailId = emailId;
         this.painIntensityLevel = painIntensityLevel;
         this.painLocation = painLocation;
@@ -119,5 +124,9 @@ public class PainRecord {
         this.temperature = temperature;
         this.humidity = humidity;
         this.pressure = pressure;
+        this.stepGoal = stepGoal;
     }
+
+
+
 }
