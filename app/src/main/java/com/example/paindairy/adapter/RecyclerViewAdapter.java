@@ -44,6 +44,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.binding.moodLevelTextView.setText(painRecord.moodLevel);
         holder.binding.dateTextView.setText(new SimpleDateFormat("dd/MM/yyyy").format(painRecord.currentDate));
         holder.binding.stepsTakenTextView.setText(Integer.toString(painRecord.stepsPerDay));
+        holder.binding.temperatureTextView.setText(Double.toString(painRecord.temperature));
+        holder.binding.humidityTextView.setText(Double.toString(painRecord.humidity));
+        holder.binding.pressureTextView.setText(Double.toString(painRecord.pressure));
     }
 
 
