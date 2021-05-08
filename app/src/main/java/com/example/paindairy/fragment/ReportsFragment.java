@@ -1,20 +1,28 @@
 package com.example.paindairy.fragment;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.paindairy.R;
+import com.example.paindairy.databinding.FragmentLineGraphBinding;
 import com.example.paindairy.databinding.ReportFragmentBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.text.DateFormat;
+import java.util.Calendar;
+
 public class ReportsFragment extends Fragment implements BottomNavigationView.OnNavigationItemSelectedListener {
     private ReportFragmentBinding reportFragmentBinding;
+
+    private FragmentLineGraphBinding fragmentLineGraphBinding;
 
 
     public ReportsFragment() {
@@ -24,6 +32,7 @@ public class ReportsFragment extends Fragment implements BottomNavigationView.On
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         reportFragmentBinding = ReportFragmentBinding.inflate(inflater,container,false);
+        fragmentLineGraphBinding = FragmentLineGraphBinding.inflate(inflater,container,false);
         View view = reportFragmentBinding.getRoot();
 
 
@@ -60,4 +69,6 @@ public class ReportsFragment extends Fragment implements BottomNavigationView.On
 
         return true;
     }
+
+
 }
