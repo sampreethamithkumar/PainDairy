@@ -5,6 +5,8 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
@@ -29,7 +31,11 @@ import android.widget.Toast;
 import com.example.paindairy.alarm.AlertReceiver;
 import com.example.paindairy.databinding.ActivityDashboardBinding;
 import com.example.paindairy.databinding.FragmentLineGraphBinding;
+import com.example.paindairy.entity.PainRecord;
 import com.example.paindairy.fragment.DatePickerFragment;
+import com.example.paindairy.viewmodel.PainRecordViewModel;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -42,17 +48,13 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
+import java.util.List;
 
-public class Dashboard extends AppCompatActivity implements View.OnClickListener, TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener {
+public class Dashboard extends AppCompatActivity implements View.OnClickListener, TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener, Observer<PainRecord> {
     private ActivityDashboardBinding binding;
     private AppBarConfiguration mAppBarConfiguration;
 
-    private FirebaseUser user;
-    private DatabaseReference reference;
-
-    private String userID;
-
-    private FirebaseAuth mAuth;
+    private PainRecordViewModel painRecordViewModel;
 
     String datePickerType;
 
@@ -74,6 +76,9 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         View view = binding.getRoot();
         setContentView(view);
 
+        painRecordViewModel = new ViewModelProvider(this).get(PainRecordViewModel.class);
+
+        painRecordViewModel.getLastUpdatedDate(FirebaseAuth.getInstance().getCurrentUser().getEmail()).observe(this,this);
 
         setSupportActionBar(binding.appBar.toolbar);
         
@@ -137,8 +142,6 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                 TextView textView = findViewById(R.id.textViewDatePickerEndDate);
                 textView.setText(currentDateString);
                 endDate = c;
-
-//                difference();
             }
         }
     }
@@ -154,5 +157,28 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         datePickerType = picker;
         DialogFragment datePicker = new DatePickerFragment();
         datePicker.show(getSupportFragmentManager(), "date picker");
+    }
+
+
+    private void pushPainRecordDataToFirebase(PainRecord painRecord) {
+        FirebaseDatabase.getInstance().getReference("PainRecords")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child(String.valueOf(painRecord.uid))
+                .setValue(painRecord).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Toast.makeText(Dashboard.this, "Pain Record added to database",Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Toast.makeText(Dashboard.this, "Unsuccesful!!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onChanged(PainRecord painRecord) {
+            pushPainRecordDataToFirebase(painRecord);
     }
 }
