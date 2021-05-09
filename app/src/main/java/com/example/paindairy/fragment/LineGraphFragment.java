@@ -20,6 +20,7 @@ import com.example.paindairy.viewmodel.PainRecordViewModel;
 import com.github.mikephil.charting.charts.CombinedChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.CombinedData;
@@ -42,6 +43,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+
+import org.apache.commons.math3.linear.MatrixUtils;
+import org.apache.commons.math3.linear.RealMatrix;
+import org.apache.commons.math3.stat.correlation.PearsonsCorrelation;
 
 public class LineGraphFragment extends Fragment implements View.OnClickListener, Observer<List<PainRecord>> {
     private FragmentLineGraphBinding fragmentLineGraphBinding;
@@ -85,6 +90,8 @@ public class LineGraphFragment extends Fragment implements View.OnClickListener,
 
         fragmentLineGraphBinding.generate.setOnClickListener(this);
 
+        fragmentLineGraphBinding.correlation.setOnClickListener(this);
+
 
        return view;
     }
@@ -102,7 +109,10 @@ public class LineGraphFragment extends Fragment implements View.OnClickListener,
         else if (v.getId() == R.id.generate) {
             weatherType = fragmentLineGraphBinding.weatherVariableSpineer.getSelectedItem().toString();
             updateUserRecord();
-
+        }
+        else if (v.getId() == R.id.correlation) {
+            fragmentLineGraphBinding.correlationTextView.setVisibility(View.VISIBLE);
+            fragmentLineGraphBinding.correlationTextView.setText(performCorrelation());
         }
     }
 
@@ -203,6 +213,7 @@ public class LineGraphFragment extends Fragment implements View.OnClickListener,
 
 
         lineChart.getAxisLeft().setAxisMinimum(0f);
+
         lineChart.getAxisLeft().setAxisMaximum(10.0f);
 
         lineChart.getAxisRight().setLabelCount(5,true);
@@ -211,28 +222,61 @@ public class LineGraphFragment extends Fragment implements View.OnClickListener,
 
         Dashboard dashboard = (Dashboard) getActivity();
         lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+        lineChart.getXAxis().setLabelCount(1, true);
+//        lineChart.getXAxis().setDrawGridLines(true);
+//        lineChart.getXAxis().setDrawGridLinesBehindData(true);
+        lineChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(getXAxisFormatter()));
 
         lineChart.getXAxis().setLabelCount((int) dashboard.difference(), true);
         lineChart.setData(data);
         lineChart.setVisibility(View.VISIBLE);
+        fragmentLineGraphBinding.correlation.setVisibility(View.VISIBLE);
     }
 
-    private ArrayList<String> getLeftAxisFormatter() {
-        ArrayList<String> yLeftAxisFormatter = new ArrayList<>();
-        for (Entry entry:yValue1)
-            yLeftAxisFormatter.add(Float.toString(entry.getY()));
+    private ArrayList<String> getXAxisFormatter() {
+        ArrayList<String> date = new ArrayList<>();
+        for ( int i = 0; i < userRecords.size(); i++) {
+            SimpleDateFormat formatter = new SimpleDateFormat("dd");
+            Date dateValue = userRecords.get(i).currentDate;
+            date.add("Day " + formatter.format(dateValue));
+        }
 
-        return yLeftAxisFormatter;
+        return date;
     }
 
-    private ArrayList<String> getRightAxisFormatter() {
-        ArrayList<String> yRightAxisFormatter = new ArrayList<>();
-        for (Entry entry:yValue2)
-            yRightAxisFormatter.add(Float.toString(entry.getY()));
+//    private ArrayList<String> getLeftAxisFormatter() {
+//        ArrayList<String> yLeftAxisFormatter = new ArrayList<>();
+//        for (Entry entry:yValue1)
+//            yLeftAxisFormatter.add(Float.toString(entry.getY()));
+//
+//        return yLeftAxisFormatter;
+//    }
+//
+//    private ArrayList<String> getRightAxisFormatter() {
+//        ArrayList<String> yRightAxisFormatter = new ArrayList<>();
+//        for (Entry entry:yValue2)
+//            yRightAxisFormatter.add(Float.toString(entry.getY()));
+//
+//        return yRightAxisFormatter;
+//    }
 
-        return yRightAxisFormatter;
+    private String performCorrelation() {
+
+        double data[][] = new double[yValue1.size()][2];
+
+        for (int i = 0; i < yValue1.size(); i++) {
+            data[i][0] = yValue1.get(i).getY();
+            data[i][1] = yValue2.get(i).getY();
+        }
+
+        RealMatrix m = MatrixUtils.createRealMatrix(data);
+
+        // correlation test (another method): x-y
+        PearsonsCorrelation pc = new PearsonsCorrelation(m); RealMatrix corM = pc.getCorrelationMatrix();
+        // significant test of the correlation coefficient (p-value)
+        RealMatrix pM = pc.getCorrelationPValues();
+        return("p value:" + pM.getEntry(0, 1)+ "\n" + " correlation: " + corM.getEntry(0, 1));
     }
-
 }
 
 //    private void setData(int count, int range) {
@@ -261,7 +305,7 @@ public class LineGraphFragment extends Fragment implements View.OnClickListener,
 //        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
 //        xAxis.setValueFormatter(new IndexAxisValueFormatter(getAreaCount()));
 //
-//        lineChart.getAxisLeft().setValueFormatter(new IndexAxisValueFormatter(getAreaCount()));
+//        lineChart.getAxisLeft().setValueFormatter();
 //
 //
 //        String[] stringArray = { "1" , "2", "3", "4","5","6" };
@@ -284,13 +328,13 @@ public class LineGraphFragment extends Fragment implements View.OnClickListener,
 //        return array;
 //    }
 //
-////    private class MyAxisValueFormatter extends ValueFormatter implements IAxisValueFormatter{
-////
-////        @Override
-////        public String getFormattedValue(float value, AxisBase axis) {
-////            return "Day" + value;
-////        }
-////    }
+//    private class MyAxisValueFormatter extends ValueFormatter implements IAxisValueFormatter{
+//
+//        @Override
+//        public String getFormattedValue(float value, AxisBase axis) {
+//            return "Day" + value;
+//        }
+//    }
 //
 //    public class MyXAxisValueFormatter extends IndexAxisValueFormatter {
 //

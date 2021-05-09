@@ -4,111 +4,151 @@
     >
 
 
-
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:id="@+id/startDateLinerLayout"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="10dp"
-        >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/startDateTitle"
-            android:layout_centerVertical="true"
-            android:text="Start Date:"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/textViewDatePicker"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/startdatePicker"
-            android:layout_marginLeft="30dp"
-            android:text=" "/>
-
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Date Picker"
-            android:layout_toRightOf="@+id/startDateTitle"
-            android:layout_marginLeft="10dp"
-            android:id="@+id/startdatePicker" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:id="@+id/finishDateLinerLayout"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="90dp"
-        >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/finishDateTitle"
-            android:layout_centerVertical="true"
-            android:text="End Date:"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/textViewDatePickerEndDate"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/endDatePicker"
-            android:layout_marginLeft="30dp"
-            android:text=" "/>
-
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Date Picker"
-            android:layout_toRightOf="@+id/finishDateTitle"
-            android:layout_marginLeft="15dp"
-            android:id="@+id/endDatePicker" />
-
-    </RelativeLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/weatherVariableTitle"
-        android:text="Weather Variable: "
-        android:layout_below="@+id/finishDateLinerLayout"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="20dp" />
-
-
-    <Spinner
-        android:id="@+id/weatherVariableSpineer"
-        android:layout_below="@+id/finishDateLinerLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_toRightOf="@id/weatherVariableTitle"
-        android:layout_marginLeft="20dp"/>
-
-    <Button
-        android:id="@+id/generate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/weatherVariableSpineer"
-        android:layout_marginTop="20dp"
-        android:text="Generate" />
-
-    <com.github.mikephil.charting.charts.LineChart
-        android:layout_width="match_parent"
+    <ScrollView android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/chart1"
-        android:layout_below="@id/generate"
-        android:visibility="gone"/>
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="800dp">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/startDateLinerLayout"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="10dp"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/startDateTitle"
+                    android:layout_centerVertical="true"
+                    android:text="Start Date:"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textViewDatePicker"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/startdatePicker"
+                    android:layout_marginLeft="30dp"
+                    android:text=" "/>
+
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Date Picker"
+                    android:layout_toRightOf="@+id/startDateTitle"
+                    android:layout_marginLeft="10dp"
+                    android:id="@+id/startdatePicker" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/finishDateLinerLayout"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="90dp"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/finishDateTitle"
+                    android:layout_centerVertical="true"
+                    android:text="End Date:"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textViewDatePickerEndDate"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/endDatePicker"
+                    android:layout_marginLeft="30dp"
+                    android:text=" "/>
+
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Date Picker"
+                    android:layout_toRightOf="@+id/finishDateTitle"
+                    android:layout_marginLeft="15dp"
+                    android:id="@+id/endDatePicker" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/weatherVariableTitle"
+                android:text="Weather Variable: "
+                android:layout_below="@+id/finishDateLinerLayout"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="20dp" />
+
+
+            <Spinner
+                android:id="@+id/weatherVariableSpineer"
+                android:layout_below="@+id/finishDateLinerLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_toRightOf="@id/weatherVariableTitle"
+                android:layout_marginLeft="20dp"/>
+
+            <Button
+                android:id="@+id/generate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/weatherVariableSpineer"
+                android:layout_marginTop="20dp"
+                android:text="Generate" />
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:id="@+id/chart1"
+                android:layout_below="@id/generate"
+                android:visibility="gone"/>
+
+
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_below="@+id/chart1"
+                android:id="@+id/correlation"
+                android:layout_marginTop="20dp"
+                android:layout_centerHorizontal="true"
+                android:text="Perform Correlation"
+                />
+
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/correlationTextView"
+                android:layout_marginTop="20dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/correlation"
+                android:visibility="gone"
+                />
+
+        </RelativeLayout>
+
+
+
+    </ScrollView>
+
+
 
 
 <!--    <TextView-->
