@@ -41,6 +41,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * Dashboard Home Fragment
+ * Welcomes the user with his/her name
+ * Shows the weather
+ */
 public class HomeFragment extends Fragment {
     private static final String API_KEY = "af0cfc6611defe4fe50200aec8c78d50";
     private static final String KEYWORD = "melbourne";
@@ -57,14 +62,20 @@ public class HomeFragment extends Fragment {
 
     private SharedViewModel model;
 
-    public HomeFragment(){
+    public HomeFragment() {
 
     }
 
+    /**
+     * Fragment onCreate lifeCycle
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the View for this fragment
         addBinding = HomeFragmentBinding.inflate(inflater, container, false);
         View view = addBinding.getRoot();
 
@@ -77,11 +88,16 @@ public class HomeFragment extends Fragment {
 
         return view;
     }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         addBinding = null;
     }
+
+    /**
+     * Get's the user details from the firebase
+     */
     private void getUserDetails() {
         user = FirebaseAuth.getInstance().getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference("Users");
@@ -91,7 +107,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User userProfile = snapshot.getValue(User.class);
-                if (userProfile != null){
+                if (userProfile != null) {
                     String fullName = userProfile.fullName;
                     greetTheUser(fullName);
                 }
@@ -104,12 +120,22 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    /**
+     * Greets the loged in user.
+     * @param name
+     */
     private void greetTheUser(String name) {
         addBinding.userName.setText(name);
     }
 
+
+    /**
+     * Retrofit
+     * Calls the open.weather api
+     * to get the weather data of melbourne
+     */
     private void getWeatherDetails() {
-        Call<WeatherAPI> callAsync = retrofitInterface.weatherApi(API_KEY,KEYWORD);
+        Call<WeatherAPI> callAsync = retrofitInterface.weatherApi(API_KEY, KEYWORD);
 
         callAsync.enqueue(new Callback<WeatherAPI>() {
             @Override
@@ -121,8 +147,7 @@ public class HomeFragment extends Fragment {
                     DecimalFormat decimalFormat = new DecimalFormat("##.##");
                     model.setWeatherApi(Double.parseDouble(decimalFormat.format(tempDouble)), Double.parseDouble(main.getPressure()), Double.parseDouble(main.getHumidity()));
                     displayWeatherDetails();
-                }
-                else
+                } else
                     Log.i("Error", "Response Failed");
             }
 
@@ -133,6 +158,9 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    /**
+     * Weather details got from API is displayed on the screen.
+     */
     private void displayWeatherDetails() {
         model.getWeatherApi().observe(getViewLifecycleOwner(), new Observer<Map<String, Double>>() {
             @Override
@@ -143,13 +171,5 @@ public class HomeFragment extends Fragment {
             }
         });
     }
-
-//    private Map<String, Object> sendDataToWorker() {
-//        Log.i("Info", latestPainRecord.emailId);
-//        Map<String, Object> painRecordHashMap = new HashMap<>();
-//        painRecordHashMap.put("painRecord", latestPainRecord);
-//
-//        return painRecordHashMap;
-//    }
 
 }

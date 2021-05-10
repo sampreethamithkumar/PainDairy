@@ -9,9 +9,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
-import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
 
@@ -23,7 +21,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TextView;
@@ -35,25 +32,20 @@ import com.example.paindairy.entity.PainRecord;
 import com.example.paindairy.fragment.DatePickerFragment;
 import com.example.paindairy.viewmodel.PainRecordViewModel;
 import com.example.paindairy.worker.PushPainRecordToFirebaseWorker;
-import com.example.paindairy.worker.UploadWorker;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 
 import java.text.DateFormat;
 import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-public class Dashboard extends AppCompatActivity implements View.OnClickListener, TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener, Observer<PainRecord> {
+public class Dashboard extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener, Observer<PainRecord> {
+
     private ActivityDashboardBinding binding;
     private AppBarConfiguration mAppBarConfiguration;
 
     private PainRecordViewModel painRecordViewModel;
-
-    private PainRecord latestPainRecord;
 
     String datePickerType;
 
@@ -62,6 +54,10 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
 
     SharedPreferences sharedPreferencesDashboard;
 
+    /**
+     * Activity oncreate lifecycle
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,13 +88,12 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
 
     }
 
-
-    @Override
-    public void onClick(View v) {
-
-    }
-
-
+    /**
+     * Time Picker fragment called
+     * @param view
+     * @param hourOfDay
+     * @param minute
+     */
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         Calendar calendar = Calendar.getInstance();
@@ -109,6 +104,10 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         startAlarm(calendar);
     }
 
+    /**
+     * Start Alarm Clock
+     * @param calendar
+     */
     private void startAlarm(Calendar calendar) {
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, AlertReceiver.class);
@@ -118,8 +117,13 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
     }
 
-
-
+    /**
+     * On Date picker fragment
+     * @param view
+     * @param year
+     * @param month
+     * @param dayOfMonth
+     */
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         Calendar c = Calendar.getInstance();
@@ -142,6 +146,11 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         }
     }
 
+    /**
+     * Get the difference of days selected
+     * to generate the line graph
+     * @return
+     */
     public long difference() {
         long differenceBetweenDate = ChronoUnit.DAYS.between(startDate.toInstant(), endDate.toInstant());
 
@@ -149,40 +158,20 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
 
     }
 
+    /**
+     * Data picker fragment pop's up.
+     * @param picker
+     */
     public void selectionFromFragment(String picker) {
         datePickerType = picker;
         DialogFragment datePicker = new DatePickerFragment();
         datePicker.show(getSupportFragmentManager(), "date picker");
     }
 
-
-//    private void pushPainRecordDataToFirebase(PainRecord painRecord) {
-//        FirebaseDatabase.getInstance().getReference("PainRecords")
-//                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-//                .child(String.valueOf(painRecord.uid))
-//                .setValue(painRecord).addOnCompleteListener(new OnCompleteListener<Void>() {
-//            @Override
-//            public void onComplete(@NonNull Task<Void> task) {
-//                if (task.isSuccessful()) {
-//                    Toast.makeText(Dashboard.this, "Pain Record added to database",Toast.LENGTH_LONG).show();
-//                }
-//                else {
-//                    Toast.makeText(Dashboard.this, "Unsuccesful!!", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
-//    }
-
-    private Map<String, Object> sendDataToWorker() {
-        Map<String, Object> painRecordHashMap = new HashMap<>();
-        if (latestPainRecord != null) {
-            Log.i("Info", latestPainRecord.emailId);
-            painRecordHashMap.put("painRecord", (Object) latestPainRecord);
-        }
-
-        return painRecordHashMap;
-    }
-
+    /**
+     * Live Data Change Observer
+     * @param painRecord
+     */
     @Override
     public void onChanged(PainRecord painRecord) {
 
@@ -200,7 +189,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         Calendar dueDate = Calendar.getInstance();
 
         // Set Execution around 05:00:00 AM
-        dueDate.set(Calendar.HOUR_OF_DAY, 10);
+        dueDate.set(Calendar.HOUR_OF_DAY, 22);
         dueDate.set(Calendar.MINUTE, 00);
         dueDate.set(Calendar.SECOND, 0);
 

@@ -14,7 +14,7 @@ import java.util.Date;
 @Entity
 public class
 PainRecord {
-    @PrimaryKey (autoGenerate = true)
+    @PrimaryKey(autoGenerate = true)
     public int uid;
 
     @ColumnInfo(name = "email_id")
@@ -71,8 +71,7 @@ PainRecord {
             this.painIntensityLevel = painIntensityLevel;
             this.painLocation = painLocation;
             this.moodLevel = moodLevel;
-        }
-        catch (Exception e)  {
+        } catch (Exception e) {
 
         }
     }
@@ -88,8 +87,7 @@ PainRecord {
             this.painLocation = painLocation;
             this.moodLevel = moodLevel;
             this.stepsPerDay = stepsPerDay;
-        }
-        catch (Exception exception) {
+        } catch (Exception exception) {
             exception.printStackTrace();
         }
     }
@@ -108,13 +106,12 @@ PainRecord {
             this.temperature = temperature;
             this.humidity = humidity;
             this.pressure = pressure;
-        }
-        catch (Exception exception) {
+        } catch (Exception exception) {
             exception.printStackTrace();
         }
     }
 
-    public PainRecord(@NonNull String emailId, int painIntensityLevel, @NonNull String painLocation, @NonNull String moodLevel, int stepsPerDay, int stepGoal , @NonNull Date currentDate, @NonNull  double temperature, @NonNull double humidity, @NonNull double pressure) {
+    public PainRecord(@NonNull String emailId, int painIntensityLevel, @NonNull String painLocation, @NonNull String moodLevel, int stepsPerDay, int stepGoal, @NonNull Date currentDate, @NonNull double temperature, @NonNull double humidity, @NonNull double pressure) {
         this.emailId = emailId;
         this.painIntensityLevel = painIntensityLevel;
         this.painLocation = painLocation;
@@ -126,7 +123,6 @@ PainRecord {
         this.pressure = pressure;
         this.stepGoal = stepGoal;
     }
-
 
 
 }

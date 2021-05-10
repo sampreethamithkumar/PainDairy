@@ -34,6 +34,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * Shows the Steps taken in a donut format
+ */
 public class DonutFragment extends Fragment {
 
     private FragmentDonutBinding fragmentDonutBinding;
@@ -45,9 +48,16 @@ public class DonutFragment extends Fragment {
 
     private PainRecord currentDayPainRecord;
 
+    /**
+     * Fragment onCreate life cycle
+     * @param inflater
+     * @param container
+     * @param savedInstaceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstaceState) {
-        fragmentDonutBinding = FragmentDonutBinding.inflate(inflater,container,false);
+        fragmentDonutBinding = FragmentDonutBinding.inflate(inflater, container, false);
         View view = fragmentDonutBinding.getRoot();
 
         pieChart = fragmentDonutBinding.donutChart;
@@ -60,12 +70,14 @@ public class DonutFragment extends Fragment {
         setupPieChart();
         getCurrentDayPainRecord();
 
-       return view;
+        return view;
     }
 
+    /**
+     * Set's up the Pie Chart
+     */
     private void setupPieChart() {
         pieChart.setDrawHoleEnabled(true);
-//        pieChart.setUsePercentValues(true);
         pieChart.setEntryLabelTextSize(12);
         pieChart.setEntryLabelColor(Color.WHITE);
         pieChart.setCenterText("Steps Goal");
@@ -80,6 +92,9 @@ public class DonutFragment extends Fragment {
         l.setEnabled(true);
     }
 
+    /**
+     * loads the pie chart with the data.
+     */
     private void loadPieChartData() {
         if (currentDayPainRecord == null)
             return;
@@ -108,6 +123,10 @@ public class DonutFragment extends Fragment {
 
     }
 
+
+    /**
+     * Get's the current day's pain record.
+     */
     private void getCurrentDayPainRecord() {
         String userEmailId = firebaseUser.getEmail();
         Date currentDate;
@@ -128,8 +147,7 @@ public class DonutFragment extends Fragment {
                     }
                 });
             }
-        }
-        catch (Exception exception) {
+        } catch (Exception exception) {
             exception.printStackTrace();
         }
 

@@ -29,7 +29,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @NonNull
     @Override
     public RecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        RvLayoutBinding binding=
+        RvLayoutBinding binding =
                 RvLayoutBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
 
 
@@ -57,7 +57,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private RvLayoutBinding binding;
-        public ViewHolder(RvLayoutBinding binding){
+
+        public ViewHolder(RvLayoutBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }

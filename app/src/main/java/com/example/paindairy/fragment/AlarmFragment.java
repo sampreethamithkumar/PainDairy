@@ -18,14 +18,24 @@ import com.example.paindairy.alarm.AlertReceiver;
 import com.example.paindairy.alarm.TimePickerFragment;
 import com.example.paindairy.databinding.FragmentAlarmBinding;
 
-public class AlarmFragment extends Fragment implements View.OnClickListener{
+/**
+ * Alarm setter Fragment
+ */
+public class AlarmFragment extends Fragment implements View.OnClickListener {
 
     private FragmentAlarmBinding fragmentAlarmBinding;
 
     public AlarmFragment() {
-        // Required empty public constructor
+
     }
 
+    /**
+     * Fragment onCreate life cycle
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -41,6 +51,10 @@ public class AlarmFragment extends Fragment implements View.OnClickListener{
 
     }
 
+    /**
+     * Button On click listener
+     * @param v
+     */
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.alarmSetter) {
@@ -51,6 +65,9 @@ public class AlarmFragment extends Fragment implements View.OnClickListener{
         }
     }
 
+    /**
+     * Set's the alarm for specifed time.
+     */
     private void alarmSetter() {
         DialogFragment timePicker = new TimePickerFragment();
         if (getFragmentManager() != null) {
@@ -58,6 +75,9 @@ public class AlarmFragment extends Fragment implements View.OnClickListener{
         }
     }
 
+    /**
+     * Option to cancel the alarm.
+     */
     private void alarmCaneller() {
         AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(getActivity(), AlertReceiver.class);

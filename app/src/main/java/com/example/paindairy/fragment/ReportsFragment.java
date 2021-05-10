@@ -19,6 +19,12 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.text.DateFormat;
 import java.util.Calendar;
 
+/**
+ * Report fragment with three child fragments
+ * Pie
+ * Donut
+ * Line
+ */
 public class ReportsFragment extends Fragment implements BottomNavigationView.OnNavigationItemSelectedListener {
     private ReportFragmentBinding reportFragmentBinding;
 
@@ -29,10 +35,17 @@ public class ReportsFragment extends Fragment implements BottomNavigationView.On
 
     }
 
+    /**
+     * Fragment on Create View lifecycle
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        reportFragmentBinding = ReportFragmentBinding.inflate(inflater,container,false);
-        fragmentLineGraphBinding = FragmentLineGraphBinding.inflate(inflater,container,false);
+        reportFragmentBinding = ReportFragmentBinding.inflate(inflater, container, false);
+        fragmentLineGraphBinding = FragmentLineGraphBinding.inflate(inflater, container, false);
         View view = reportFragmentBinding.getRoot();
 
 
@@ -48,6 +61,11 @@ public class ReportsFragment extends Fragment implements BottomNavigationView.On
         reportFragmentBinding = null;
     }
 
+    /**
+     * Bottom Navigation of report fragment
+     * @param item
+     * @return
+     */
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         Fragment selectedFragment = null;

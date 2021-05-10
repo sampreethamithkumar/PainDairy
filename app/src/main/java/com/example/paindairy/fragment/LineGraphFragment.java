@@ -56,15 +56,21 @@ public class LineGraphFragment extends Fragment implements View.OnClickListener,
     private String weatherType;
 
     private LineChart lineChart;
-//    private CombinedChart chart;
 
     private List<PainRecord> userRecords;
     private ArrayList<Entry> yValue1;
     private ArrayList<Entry> yValue2;
 
+    /**
+     * Fragment onCreate lifeCycle
+     * @param inflater
+     * @param container
+     * @param savedInstaceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstaceState) {
-        fragmentLineGraphBinding = FragmentLineGraphBinding.inflate(inflater,container,false);
+        fragmentLineGraphBinding = FragmentLineGraphBinding.inflate(inflater, container, false);
         View view = fragmentLineGraphBinding.getRoot();
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -72,18 +78,8 @@ public class LineGraphFragment extends Fragment implements View.OnClickListener,
         weatherDetails();
 
         painRecordViewModel = new ViewModelProvider(this).get(PainRecordViewModel.class);
-//
-//        setData(40,60);
-//        lineChart.animateX(1000);
-
-//        XAxis xAxis = lineChart.getXAxis();
-//        YAxis yAxisLeft = lineChart.getAxisLeft();
-//        YAxis yAxisRight = lineChart.getAxisRight();
-
-//        xAxis.setValueFormatter(new MyAxisValueFormatter());
 
         lineChart = fragmentLineGraphBinding.chart1;
-//        chart = fragmentLineGraphBinding.chart1;
 
         fragmentLineGraphBinding.startdatePicker.setOnClickListener(this);
         fragmentLineGraphBinding.endDatePicker.setOnClickListener(this);
@@ -93,34 +89,41 @@ public class LineGraphFragment extends Fragment implements View.OnClickListener,
         fragmentLineGraphBinding.correlation.setOnClickListener(this);
 
 
-       return view;
+        return view;
     }
 
+    /**
+     * On Button CLick listener
+     * @param v
+     */
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.startdatePicker) {
             Dashboard dashboard = (Dashboard) getActivity();
             dashboard.selectionFromFragment("startDatePicker");
-        }
-        else if (v.getId() == R.id.endDatePicker) {
+        } else if (v.getId() == R.id.endDatePicker) {
             Dashboard dashboard = (Dashboard) getActivity();
             dashboard.selectionFromFragment("endDatePicker");
-        }
-        else if (v.getId() == R.id.generate) {
+        } else if (v.getId() == R.id.generate) {
             weatherType = fragmentLineGraphBinding.weatherVariableSpineer.getSelectedItem().toString();
             updateUserRecord();
-        }
-        else if (v.getId() == R.id.correlation) {
+        } else if (v.getId() == R.id.correlation) {
             fragmentLineGraphBinding.correlationTextView.setVisibility(View.VISIBLE);
             fragmentLineGraphBinding.correlationTextView.setText(performCorrelation());
         }
     }
 
+    /**
+     * Get the user record only if the start date and end date is provided
+     */
     private void updateUserRecord() {
         if ((!fragmentLineGraphBinding.textViewDatePicker.getText().equals(" ")) && (!fragmentLineGraphBinding.textViewDatePickerEndDate.getText().equals(" ")))
             painRecordViewModel.getAllPainRecords().observe(getViewLifecycleOwner(), this);
     }
 
+    /**
+     * Weather selection spinner
+     */
     public void weatherDetails() {
         List<String> weather = new ArrayList<>();
         weather.add("Temperature");
@@ -131,6 +134,10 @@ public class LineGraphFragment extends Fragment implements View.OnClickListener,
         fragmentLineGraphBinding.weatherVariableSpineer.setAdapter(arrayAdapter);
     }
 
+    /**
+     * Live Data of PainRecord on Change listener
+     * @param painRecords
+     */
     @Override
     public void onChanged(List<PainRecord> painRecords) {
         List<PainRecord> userPainRecord = new ArrayList<>();
@@ -139,7 +146,7 @@ public class LineGraphFragment extends Fragment implements View.OnClickListener,
         if (dates.size() == 0)
             return;
 
-        for (PainRecord painRecord: painRecords) {
+        for (PainRecord painRecord : painRecords) {
             if (painRecord.emailId.equals(firebaseUser.getEmail())) {
                 if ((painRecord.currentDate.after(dates.get("startDate")) && painRecord.currentDate.before(dates.get("endDate"))) ||
                         (painRecord.currentDate.equals(dates.get("startDate"))) ||
@@ -152,6 +159,10 @@ public class LineGraphFragment extends Fragment implements View.OnClickListener,
         setData();
     }
 
+    /**
+     * Get the start date and end date selected by user
+     * @return
+     */
     private HashMap<String, Date> getDates() {
 
         HashMap<String, Date> dates = new HashMap<>();
@@ -175,27 +186,27 @@ public class LineGraphFragment extends Fragment implements View.OnClickListener,
         return dates;
     }
 
-
+    /**
+     * Sets the data on the line graph
+     */
     private void setData() {
         yValue1 = new ArrayList<>();
 
-        for (int i = 0; i < userRecords.size(); i ++) {
+        for (int i = 0; i < userRecords.size(); i++) {
             yValue1.add(new Entry(i, userRecords.get(i).painIntensityLevel));
         }
 
         yValue2 = new ArrayList<>();
 
         if (weatherType.equals("Temperature")) {
-            for (int i = 0; i< userRecords.size(); i++) {
+            for (int i = 0; i < userRecords.size(); i++) {
                 yValue2.add(new Entry(i, (float) userRecords.get(i).temperature));
             }
-        }
-        else if (weatherType.equals("Humidity")) {
-            for (int i = 0; i < userRecords.size(); i++){
+        } else if (weatherType.equals("Humidity")) {
+            for (int i = 0; i < userRecords.size(); i++) {
                 yValue2.add(new Entry(i, (float) userRecords.get(i).humidity));
             }
-        }
-        else if (weatherType.equals("Pressure")) {
+        } else if (weatherType.equals("Pressure")) {
             for (int i = 0; i < userRecords.size(); i++) {
                 yValue2.add(new Entry(i, (float) userRecords.get(i).pressure));
             }
@@ -204,7 +215,7 @@ public class LineGraphFragment extends Fragment implements View.OnClickListener,
         LineDataSet set_1 = new LineDataSet(yValue1, "Pain Level");
         LineDataSet set_2 = new LineDataSet(yValue2, weatherType);
         set_2.setAxisDependency(YAxis.AxisDependency.RIGHT);
-        LineData data = new LineData(set_1,set_2);
+        LineData data = new LineData(set_1, set_2);
         set_1.setColor(ColorTemplate.rgb("#FF0000"));
         set_1.setCircleColor(ColorTemplate.rgb("#FF0000"));
 
@@ -216,15 +227,13 @@ public class LineGraphFragment extends Fragment implements View.OnClickListener,
 
         lineChart.getAxisLeft().setAxisMaximum(10.0f);
 
-        lineChart.getAxisRight().setLabelCount(5,true);
+        lineChart.getAxisRight().setLabelCount(5, true);
         lineChart.getAxisRight().setDrawGridLines(false);
 
 
         Dashboard dashboard = (Dashboard) getActivity();
         lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
         lineChart.getXAxis().setLabelCount(1, true);
-//        lineChart.getXAxis().setDrawGridLines(true);
-//        lineChart.getXAxis().setDrawGridLinesBehindData(true);
         lineChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(getXAxisFormatter()));
 
         lineChart.getXAxis().setLabelCount((int) dashboard.difference(), true);
@@ -233,9 +242,13 @@ public class LineGraphFragment extends Fragment implements View.OnClickListener,
         fragmentLineGraphBinding.correlation.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Formate the x-axis based on the date.
+     * @return
+     */
     private ArrayList<String> getXAxisFormatter() {
         ArrayList<String> date = new ArrayList<>();
-        for ( int i = 0; i < userRecords.size(); i++) {
+        for (int i = 0; i < userRecords.size(); i++) {
             SimpleDateFormat formatter = new SimpleDateFormat("dd");
             Date dateValue = userRecords.get(i).currentDate;
             date.add("Day " + formatter.format(dateValue));
@@ -244,22 +257,10 @@ public class LineGraphFragment extends Fragment implements View.OnClickListener,
         return date;
     }
 
-//    private ArrayList<String> getLeftAxisFormatter() {
-//        ArrayList<String> yLeftAxisFormatter = new ArrayList<>();
-//        for (Entry entry:yValue1)
-//            yLeftAxisFormatter.add(Float.toString(entry.getY()));
-//
-//        return yLeftAxisFormatter;
-//    }
-//
-//    private ArrayList<String> getRightAxisFormatter() {
-//        ArrayList<String> yRightAxisFormatter = new ArrayList<>();
-//        for (Entry entry:yValue2)
-//            yRightAxisFormatter.add(Float.toString(entry.getY()));
-//
-//        return yRightAxisFormatter;
-//    }
-
+    /**
+     * Perform Correlation from the data present.
+     * @return
+     */
     private String performCorrelation() {
 
         double data[][] = new double[yValue1.size()][2];
@@ -272,75 +273,11 @@ public class LineGraphFragment extends Fragment implements View.OnClickListener,
         RealMatrix m = MatrixUtils.createRealMatrix(data);
 
         // correlation test (another method): x-y
-        PearsonsCorrelation pc = new PearsonsCorrelation(m); RealMatrix corM = pc.getCorrelationMatrix();
+        PearsonsCorrelation pc = new PearsonsCorrelation(m);
+        RealMatrix corM = pc.getCorrelationMatrix();
         // significant test of the correlation coefficient (p-value)
         RealMatrix pM = pc.getCorrelationPValues();
-        return("p value:" + pM.getEntry(0, 1)+ "\n" + " correlation: " + corM.getEntry(0, 1));
+        return ("p value:" + pM.getEntry(0, 1) + "\n" + " correlation: " + corM.getEntry(0, 1));
     }
 }
 
-//    private void setData(int count, int range) {
-//        ArrayList<Entry> yVal1 = new ArrayList<>();
-//
-//
-//        for (int i = 0; i < count; i++) {
-//            float val = (float) (Math.random() * range) + 250;
-//            yVal1.add(new Entry(i, val));
-//        }
-//
-//        ArrayList<Entry> yVal2 = new ArrayList<>();
-//        for (int i = 0; i < count; i++) {
-//            float val = (float) (Math.random() * range) + 500;
-//            yVal2.add(new Entry(i, val));
-//        }
-//
-//        LineDataSet set_1 = new LineDataSet(yVal1, "Data Set 1");
-//        LineDataSet set_2 = new LineDataSet(yVal2, "Data Set 2");
-//
-//
-//
-//        LineData data = new LineData(set_1,set_2);
-//
-//        XAxis xAxis = lineChart.getXAxis();
-//        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-//        xAxis.setValueFormatter(new IndexAxisValueFormatter(getAreaCount()));
-//
-//        lineChart.getAxisLeft().setValueFormatter();
-//
-//
-//        String[] stringArray = { "1" , "2", "3", "4","5","6" };
-//        lineChart.getAxisLeft().setValueFormatter(new ValueFormatter() {
-//            @Override
-//            public String getFormattedValue(float value) {
-//                if (counter < stringArray.length)
-//                    return stringArray[counter++];
-//
-//                return "0";
-//            }
-//        });
-//
-//        lineChart.setData(data);
-//    }
-//
-//    public String[] getAreaCount() {
-//        String[] array = { "1" , "2", "3", "4","5","6" };
-//
-//        return array;
-//    }
-//
-//    private class MyAxisValueFormatter extends ValueFormatter implements IAxisValueFormatter{
-//
-//        @Override
-//        public String getFormattedValue(float value, AxisBase axis) {
-//            return "Day" + value;
-//        }
-//    }
-//
-//    public class MyXAxisValueFormatter extends IndexAxisValueFormatter {
-//
-//        @Override
-//        public String getFormattedValue(float value) {
-//            return "Day" + value;
-//        }
-//    }
-//}

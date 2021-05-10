@@ -23,6 +23,9 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Displays the User Daily Records in recycler view
+ */
 public class DailyRecordFragment extends Fragment implements Observer<List<PainRecord>> {
     private DailyRecordFragmentBinding dailyRecordFragmentBinding;
 
@@ -37,9 +40,16 @@ public class DailyRecordFragment extends Fragment implements Observer<List<PainR
 
     }
 
+    /**
+     * Fragment onCreate View lifecycle
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        dailyRecordFragmentBinding = DailyRecordFragmentBinding.inflate(inflater,container, false);
+        dailyRecordFragmentBinding = DailyRecordFragmentBinding.inflate(inflater, container, false);
         View view = dailyRecordFragmentBinding.getRoot();
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -53,15 +63,20 @@ public class DailyRecordFragment extends Fragment implements Observer<List<PainR
 
     @Override
     public void onDestroyView() {
-        super.onDestroyView();;
+        super.onDestroyView();
+        ;
         dailyRecordFragmentBinding = null;
     }
 
+    /**
+     * Live Data Change reflected
+     * @param painRecords
+     */
     @Override
     public void onChanged(List<PainRecord> painRecords) {
 
         List<PainRecord> currentUserPainRecord = new ArrayList<>();
-        for(PainRecord painRecord : painRecords)
+        for (PainRecord painRecord : painRecords)
             if (painRecord.emailId.equals(firebaseUser.getEmail()))
                 currentUserPainRecord.add(painRecord);
 

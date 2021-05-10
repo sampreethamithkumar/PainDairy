@@ -25,11 +25,14 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * MapBox Api Fragment
+ */
 public class MapsFragment extends Fragment implements OnMapReadyCallback, View.OnClickListener {
     private MapFragmentBinding mapFragmentBinding;
     private MapView mapView;
 
-//    Default Value
+    //    Default Value
     double lat = -37.876823;
     double lon = 145.045837;
 
@@ -39,29 +42,42 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, View.O
 
     }
 
+    /**
+     * Fragment onCreate life cycle
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         String token = getString(R.string.mapbox_access_token);
         Mapbox.getInstance(getActivity(), token);
-        mapFragmentBinding = MapFragmentBinding.inflate(inflater, container,false);
+        mapFragmentBinding = MapFragmentBinding.inflate(inflater, container, false);
         View view = mapFragmentBinding.getRoot();
         mapView = (MapView) view.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
-        loadMap(lat,lon);
+        loadMap(lat, lon);
 
         mapFragmentBinding.addressLookUp.setOnClickListener(this);
-        
+
 
         return view;
     }
 
-
+    /**
+     * Button On click listener
+     * @param v
+     */
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.addressLookUp)
             getLatLonLocation();
     }
 
+    /**
+     * Get the lat and long of the location using geocoder
+     */
     private void getLatLonLocation() {
         String address = mapFragmentBinding.addressEditText.getText().toString();
 
@@ -72,8 +88,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, View.O
                 if (addressList.size() > 0) {
                     lat = addressList.get(0).getLatitude();
                     lon = addressList.get(0).getLongitude();
-                }
-                else {
+                } else {
                     mapFragmentBinding.addressEditText.setError("Please enter a valid address");
                     mapFragmentBinding.addressEditText.requestFocus();
                 }
@@ -81,16 +96,20 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, View.O
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            loadMap(lat,lon);
-        }
-        else {
+            loadMap(lat, lon);
+        } else {
             mapFragmentBinding.addressEditText.setError("Please enter a Address");
             mapFragmentBinding.addressEditText.requestFocus();
         }
     }
 
+    /**
+     * load the data to map
+     * @param lat
+     * @param lon
+     */
     private void loadMap(double lat, double lon) {
-        latLng = new LatLng(lat,lon);
+        latLng = new LatLng(lat, lon);
 
         mapView.getMapAsync(this);
 
@@ -101,6 +120,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, View.O
         super.onDestroyView();
         mapFragmentBinding = null;
     }
+
 
     @Override
     public void onMapReady(@NonNull MapboxMap mapboxMap) {
@@ -116,36 +136,43 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, View.O
             }
         });
     }
+
     @Override
     public void onStart() {
         super.onStart();
         mapView.onStart();
     }
+
     @Override
     public void onResume() {
         super.onResume();
         mapView.onResume();
     }
+
     @Override
     public void onPause() {
         super.onPause();
         mapView.onPause();
     }
+
     @Override
     public void onStop() {
         super.onStop();
         mapView.onStop();
     }
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         mapView.onSaveInstanceState(outState);
     }
+
     @Override
     public void onLowMemory() {
         super.onLowMemory();
         mapView.onLowMemory();
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
