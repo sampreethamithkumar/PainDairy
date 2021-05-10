@@ -11,7 +11,7 @@ public class SharedViewModel extends ViewModel {
 
     private MutableLiveData<Map<String, Double>> weatherApi;
 
-    public SharedViewModel(){
+    public SharedViewModel() {
         weatherApi = new MutableLiveData<Map<String, Double>>();
     }
 

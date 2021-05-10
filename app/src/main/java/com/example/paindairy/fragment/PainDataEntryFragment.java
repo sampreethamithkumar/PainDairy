@@ -59,7 +59,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class PainDataEntryFragment extends Fragment implements BottomNavigationView.OnNavigationItemSelectedListener{
+/**
+ * Pain Data Entry Fragment with two child fragments
+ * Data Entry
+ * Alarm Fragment
+ */
+public class PainDataEntryFragment extends Fragment implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     private PainDataEntryBinding painDataEntryBinding;
 
@@ -67,9 +72,16 @@ public class PainDataEntryFragment extends Fragment implements BottomNavigationV
 
     }
 
+    /**
+     * Fragment onCreate life cycle view
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        painDataEntryBinding = PainDataEntryBinding.inflate(inflater,container, false);
+        painDataEntryBinding = PainDataEntryBinding.inflate(inflater, container, false);
         View view = painDataEntryBinding.getRoot();
 
         painDataEntryBinding.bottomNavigation.setOnNavigationItemSelectedListener(this);
@@ -85,6 +97,11 @@ public class PainDataEntryFragment extends Fragment implements BottomNavigationV
         painDataEntryBinding = null;
     }
 
+    /**
+     * Bottom Navigation opens fragment based on the fragment selection
+     * @param item
+     * @return
+     */
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         Fragment selectedFragment = null;

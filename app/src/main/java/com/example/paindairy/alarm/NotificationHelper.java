@@ -29,7 +29,7 @@ public class NotificationHelper extends ContextWrapper {
 
     @TargetApi(Build.VERSION_CODES.O)
     public void createChannel() {
-        NotificationChannel channel = new NotificationChannel(channelID,channel1Name, NotificationManager.IMPORTANCE_DEFAULT);
+        NotificationChannel channel = new NotificationChannel(channelID, channel1Name, NotificationManager.IMPORTANCE_DEFAULT);
         channel.enableLights(true);
         channel.enableVibration(true);
         channel.setLightColor(R.color.design_default_color_primary);

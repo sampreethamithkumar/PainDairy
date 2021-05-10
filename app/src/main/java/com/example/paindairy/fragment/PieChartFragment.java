@@ -25,6 +25,9 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Pie Chart Display fragment
+ */
 public class PieChartFragment extends Fragment implements Observer<List<PainRecord>> {
     private FragmentPieBinding pieBinding;
 
@@ -32,13 +35,20 @@ public class PieChartFragment extends Fragment implements Observer<List<PainReco
 
     private PainRecordViewModel painRecordViewModel;
 
-    final private String[] painLocations = {"Abdomen" , "Back", "Elbows", "Facial", "Hips", "Jaw", "Knees", "Neck" , "Shins", "Shoulder"};
+    final private String[] painLocations = {"Abdomen", "Back", "Elbows", "Facial", "Hips", "Jaw", "Knees", "Neck", "Shins", "Shoulder"};
     private int[] painLocationCount = new int[painLocations.length];
 
 
+    /**
+     * Fragment onCreate Life Cycle
+     * @param inflater
+     * @param container
+     * @param savedInstaceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstaceState) {
-        pieBinding = FragmentPieBinding.inflate(inflater,container,false);
+        pieBinding = FragmentPieBinding.inflate(inflater, container, false);
         View view = pieBinding.getRoot();
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -47,10 +57,13 @@ public class PieChartFragment extends Fragment implements Observer<List<PainReco
 
         painRecordViewModel.getAllPainRecords().observe(getViewLifecycleOwner(), this);
 
-        
-       return view;
+
+        return view;
     }
 
+    /**
+     * initial setup of pie chart
+     */
     public void setupPieChart() {
         Pie pie = AnyChart.pie();
         List<DataEntry> dataEntries = new ArrayList<>();
@@ -65,6 +78,10 @@ public class PieChartFragment extends Fragment implements Observer<List<PainReco
 
     }
 
+    /**
+     * On data change listener
+     * @param painRecords
+     */
     @Override
     public void onChanged(List<PainRecord> painRecords) {
 

@@ -47,7 +47,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class DataEntryFragment extends Fragment implements View.OnClickListener, SeekBar.OnSeekBarChangeListener{
+public class DataEntryFragment extends Fragment implements View.OnClickListener, SeekBar.OnSeekBarChangeListener {
     private FragmentDataEntryBinding fragmentDataEntryBinding;
 
     private PainRecordViewModel painRecordViewModel;
@@ -63,7 +63,7 @@ public class DataEntryFragment extends Fragment implements View.OnClickListener,
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        fragmentDataEntryBinding = FragmentDataEntryBinding.inflate(inflater,container, false);
+        fragmentDataEntryBinding = FragmentDataEntryBinding.inflate(inflater, container, false);
         View view = fragmentDataEntryBinding.getRoot();
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -88,7 +88,6 @@ public class DataEntryFragment extends Fragment implements View.OnClickListener,
     }
 
 
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -99,11 +98,9 @@ public class DataEntryFragment extends Fragment implements View.OnClickListener,
     public void onClick(View v) {
         if (v.getId() == R.id.saveButton) {
             insertPainRecord();
-        }
-        else if (v.getId() == R.id.editButton) {
+        } else if (v.getId() == R.id.editButton) {
             editPainRecord();
-        }
-        else if (v.getId() == R.id.deleteButton) {
+        } else if (v.getId() == R.id.deleteButton) {
             deleteRecords();
         }
 
@@ -141,7 +138,7 @@ public class DataEntryFragment extends Fragment implements View.OnClickListener,
         locations.add("Shins");
         locations.add("Shoulders");
 
-        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item,locations);
+        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, locations);
         fragmentDataEntryBinding.painLocationSpinner.setAdapter(arrayAdapter);
     }
 
@@ -153,7 +150,7 @@ public class DataEntryFragment extends Fragment implements View.OnClickListener,
         moods.add("Good");
         moods.add("Very good");
 
-        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item,moods);
+        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, moods);
         fragmentDataEntryBinding.moodLevelSpinner.setAdapter(arrayAdapter);
     }
 
@@ -175,12 +172,11 @@ public class DataEntryFragment extends Fragment implements View.OnClickListener,
                                 fragmentDataEntryBinding.saveButton.setEnabled(false);
 
                                 currentDayPainRecord = painRecord;
-                            }
-                            else{
+                            } else {
                                 fragmentDataEntryBinding.editButton.setEnabled(false);
                                 fragmentDataEntryBinding.saveButton.setEnabled(true);
                             }
-                        else{
+                        else {
                             alarmSetter();
                             fragmentDataEntryBinding.editButton.setEnabled(false);
                             fragmentDataEntryBinding.saveButton.setEnabled(true);
@@ -188,8 +184,7 @@ public class DataEntryFragment extends Fragment implements View.OnClickListener,
                     }
                 });
             }
-        }
-        catch (Exception exception) {
+        } catch (Exception exception) {
             exception.printStackTrace();
         }
     }
@@ -212,12 +207,11 @@ public class DataEntryFragment extends Fragment implements View.OnClickListener,
         int stepsGoalInt;
 
 
-        try{
+        try {
             painLevelInt = Integer.parseInt(painLevel);
             stepsTakenInt = Integer.parseInt(stepsTaken);
             stepsGoalInt = Integer.parseInt(stepsGoal);
-        }
-        catch (Exception exception) {
+        } catch (Exception exception) {
             fragmentDataEntryBinding.stepsTakenEditText.setError("Should be Numbers only");
             fragmentDataEntryBinding.stepsTakenEditText.requestFocus();
             return;
@@ -229,16 +223,14 @@ public class DataEntryFragment extends Fragment implements View.OnClickListener,
                 Date currentDate = formatter.parse(formatter.format(new Date()));
 
                 weather = getWeather();
-                PainRecord painRecord = new PainRecord(firebaseUser.getEmail(), painLevelInt, painLocation, moodLevel, stepsTakenInt, stepsGoalInt ,currentDate,weather.getTemperature(), weather.getHumidity(), weather.getPressure());
+                PainRecord painRecord = new PainRecord(firebaseUser.getEmail(), painLevelInt, painLocation, moodLevel, stepsTakenInt, stepsGoalInt, currentDate, weather.getTemperature(), weather.getHumidity(), weather.getPressure());
                 painRecordViewModel.insert(painRecord);
-                Toast.makeText(getActivity(), "Pain Record Inserted successfully",Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Pain Record Inserted successfully", Toast.LENGTH_LONG).show();
                 fragmentDataEntryBinding.saveButton.setEnabled(false);
+            } catch (Exception exception) {
+                Toast.makeText(getActivity(), "Unexpected error occured inserting the data", Toast.LENGTH_LONG).show();
             }
-            catch (Exception exception){
-                Toast.makeText(getActivity(), "Unexpected error occured inserting the data",Toast.LENGTH_LONG).show();
-            }
-        }
-        else
+        } else
             Toast.makeText(getContext(), "Unexceptional error occured inserting the record", Toast.LENGTH_LONG).show();
     }
 
@@ -254,12 +246,11 @@ public class DataEntryFragment extends Fragment implements View.OnClickListener,
         int stepsGoalInt;
 
 
-        try{
+        try {
             painLevelInt = Integer.parseInt(painLevel);
             stepsTakenInt = Integer.parseInt(stepsTaken);
             stepsGoalInt = Integer.parseInt(stepsGoal);
-        }
-        catch (Exception exception) {
+        } catch (Exception exception) {
             fragmentDataEntryBinding.stepsTakenEditText.setError("Should be Numbers only");
             fragmentDataEntryBinding.stepsTakenEditText.requestFocus();
             return;
@@ -275,12 +266,10 @@ public class DataEntryFragment extends Fragment implements View.OnClickListener,
             try {
                 painRecordViewModel.update(currentDayPainRecord);
                 Toast.makeText(getActivity(), "Pain Record Updated", Toast.LENGTH_LONG).show();
-            }
-            catch (Exception exception) {
+            } catch (Exception exception) {
                 Toast.makeText(getActivity(), "Unexpected error occured!", Toast.LENGTH_LONG).show();
             }
-        }
-        else
+        } else
             Toast.makeText(getActivity(), "Please make changes to the value before editing", Toast.LENGTH_LONG).show();
     }
 

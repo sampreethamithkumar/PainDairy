@@ -13,7 +13,10 @@ import com.example.paindairy.R;
 import com.example.paindairy.databinding.AccountFragmentBinding;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class AccountFragment extends Fragment implements View.OnClickListener{
+/**
+ * Fragment to logout the user.
+ */
+public class AccountFragment extends Fragment implements View.OnClickListener {
     private AccountFragmentBinding accountFragmentBinding;
 
     public AccountFragment() {
@@ -22,7 +25,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener{
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstaceState) {
-        accountFragmentBinding = AccountFragmentBinding.inflate(inflater,container, false);
+        accountFragmentBinding = AccountFragmentBinding.inflate(inflater, container, false);
         View view = accountFragmentBinding.getRoot();
 
         accountFragmentBinding.logoutButton.setOnClickListener(this);

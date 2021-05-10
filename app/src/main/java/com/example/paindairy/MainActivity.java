@@ -19,11 +19,15 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener{
-    private  ActivityMainBinding binding;
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
+    private ActivityMainBinding binding;
 
     private FirebaseAuth mAuth;
 
+    /**
+     * OnCreate Activity Life cycle
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +50,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         binding.checkbox.setOnCheckedChangeListener(this);
     }
 
+
+    /**
+     * On Button Click
+     * @param v view
+     */
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.signUpText)
@@ -56,16 +65,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             userLogin();
     }
 
+    /**
+     * Perform userLogin
+     */
     private void userLogin() {
         String email = binding.emailIdEditText.getText().toString().trim();
         String password = binding.passwordEditText.getText().toString().trim();
 
-        if (!inputChecking(email,password))
+        if (!inputChecking(email, password))
             return;
 
         binding.progressBar.setVisibility(View.VISIBLE);
 
-        mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
 
@@ -75,14 +87,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if (user.isEmailVerified()) {
                         binding.progressBar.setVisibility(View.GONE);
                         startActivity(new Intent(MainActivity.this, Dashboard.class));
-                    }
-                    else {
+                    } else {
                         user.sendEmailVerification();
                         Toast.makeText(MainActivity.this, "Check your email to verify your account!", Toast.LENGTH_LONG).show();
                         binding.progressBar.setVisibility(View.GONE);
                     }
-                }
-                else {
+                } else {
                     Toast.makeText(MainActivity.this, "Failed to login! Please check your credentials", Toast.LENGTH_LONG).show();
                     binding.progressBar.setVisibility(View.GONE);
                 }
@@ -90,6 +100,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
+    /**
+     * Checkbox on click change Listener
+     * @param buttonView
+     * @param isChecked
+     */
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (isChecked)
@@ -103,13 +118,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             binding.emailIdEditText.setError("Email Id Is requried");
             binding.emailIdEditText.requestFocus();
             return false;
-        }
-        else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             binding.emailIdEditText.setError("Please enter a valid email");
             binding.emailIdEditText.requestFocus();
             return false;
-        }
-        else if (password.isEmpty()) {
+        } else if (password.isEmpty()) {
             binding.passwordEditText.setError("Passwrod is required");
             binding.passwordEditText.requestFocus();
             return false;

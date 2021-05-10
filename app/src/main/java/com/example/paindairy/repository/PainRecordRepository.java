@@ -19,7 +19,7 @@ public class PainRecordRepository {
     private PainRecordDAO painRecordDao;
     private LiveData<List<PainRecord>> allPainRecords;
 
-    public PainRecordRepository(Application application){
+    public PainRecordRepository(Application application) {
         PainRecordDatabase db = PainRecordDatabase.getInstance(application);
         painRecordDao = db.painRecordDAO();
         allPainRecords = painRecordDao.getAll();
@@ -29,7 +29,7 @@ public class PainRecordRepository {
         return allPainRecords;
     }
 
-    public  void insert(final PainRecord painRecord){
+    public void insert(final PainRecord painRecord) {
         PainRecordDatabase.databaseWriteExecutor.execute(new Runnable() {
             @Override
             public void run() {
@@ -38,7 +38,7 @@ public class PainRecordRepository {
         });
     }
 
-    public void deleteAll(){
+    public void deleteAll() {
         PainRecordDatabase.databaseWriteExecutor.execute(new Runnable() {
             @Override
             public void run() {
@@ -47,7 +47,7 @@ public class PainRecordRepository {
         });
     }
 
-    public void delete(final PainRecord painRecord){
+    public void delete(final PainRecord painRecord) {
         PainRecordDatabase.databaseWriteExecutor.execute(new Runnable() {
             @Override
             public void run() {
@@ -56,7 +56,7 @@ public class PainRecordRepository {
         });
     }
 
-    public void updatePainRecord(final PainRecord painRecord){
+    public void updatePainRecord(final PainRecord painRecord) {
         PainRecordDatabase.databaseWriteExecutor.execute(new Runnable() {
             @Override
             public void run() {
@@ -83,6 +83,8 @@ public class PainRecordRepository {
         return painRecordDao.getLastId(emailid);
     }
 
-    public LiveData<PainRecord> getLastUpdatedDate(String emailid) { return painRecordDao.getLastUpdatedDate(emailid); }
+    public LiveData<PainRecord> getLastUpdatedDate(String emailid) {
+        return painRecordDao.getLastUpdatedDate(emailid);
+    }
 }
 
