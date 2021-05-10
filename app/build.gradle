@@ -9,8 +9,8 @@ android {
 
     defaultConfig {
         applicationId "com.example.paindairy"
-        minSdkVersion 30
-        targetSdkVersion 30
+        minSdkVersion 28
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
 

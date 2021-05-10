@@ -11,6 +11,10 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
 
 import com.example.paindairy.entity.User;
 import com.example.paindairy.databinding.HomeFragmentBinding;
@@ -20,6 +24,7 @@ import com.example.paindairy.weatherApi.Main;
 import com.example.paindairy.weatherApi.RetrofitClient;
 import com.example.paindairy.weatherApi.RetrofitInterface;
 import com.example.paindairy.weatherApi.WeatherAPI;
+import com.example.paindairy.worker.PushPainRecordToFirebaseWorker;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -69,6 +74,7 @@ public class HomeFragment extends Fragment {
         retrofitInterface = RetrofitClient.getRetrofitService();
         getUserDetails();
         getWeatherDetails();
+
         return view;
     }
     @Override
@@ -137,5 +143,13 @@ public class HomeFragment extends Fragment {
             }
         });
     }
+
+//    private Map<String, Object> sendDataToWorker() {
+//        Log.i("Info", latestPainRecord.emailId);
+//        Map<String, Object> painRecordHashMap = new HashMap<>();
+//        painRecordHashMap.put("painRecord", latestPainRecord);
+//
+//        return painRecordHashMap;
+//    }
 
 }
