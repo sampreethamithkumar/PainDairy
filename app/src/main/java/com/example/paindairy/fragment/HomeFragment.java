@@ -16,6 +16,7 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
 
+import com.example.paindairy.R;
 import com.example.paindairy.entity.User;
 import com.example.paindairy.databinding.HomeFragmentBinding;
 import com.example.paindairy.entity.Weather;
@@ -33,7 +34,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -81,12 +86,28 @@ public class HomeFragment extends Fragment {
 
         model = new ViewModelProvider(getActivity()).get(SharedViewModel.class);
 
+        addBinding.imageView.setImageResource(R.drawable.download);
+
+        setDate();
+
         mAuth = FirebaseAuth.getInstance();
         retrofitInterface = RetrofitClient.getRetrofitService();
         getUserDetails();
         getWeatherDetails();
 
         return view;
+    }
+
+    private void setDate() {
+        try {
+            Calendar c = Calendar.getInstance();
+            String currentDate = DateFormat.getDateInstance(DateFormat.FULL).format(c.getTime());
+            addBinding.date.setText("Date: " + currentDate);
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
     }
 
     @Override

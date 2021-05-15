@@ -16,6 +16,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
@@ -73,7 +75,7 @@ public class DataEntryFragment extends Fragment implements View.OnClickListener,
         model = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
 
         painLocationSpinner();
-        moodLevelSpinner();
+//        moodLevelSpinner();
         enableOrDisableButton();
 
         fragmentDataEntryBinding.saveButton.setOnClickListener(this);
@@ -83,6 +85,8 @@ public class DataEntryFragment extends Fragment implements View.OnClickListener,
         fragmentDataEntryBinding.seekBar.setOnSeekBarChangeListener(this);
 
         fragmentDataEntryBinding.deleteButton.setOnClickListener(this);
+
+
 
         return view;
     }
@@ -142,17 +146,17 @@ public class DataEntryFragment extends Fragment implements View.OnClickListener,
         fragmentDataEntryBinding.painLocationSpinner.setAdapter(arrayAdapter);
     }
 
-    public void moodLevelSpinner() {
-        List<String> moods = new ArrayList<>();
-        moods.add("Very low");
-        moods.add("Low");
-        moods.add("Average");
-        moods.add("Good");
-        moods.add("Very good");
-
-        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, moods);
-        fragmentDataEntryBinding.moodLevelSpinner.setAdapter(arrayAdapter);
-    }
+//    public void moodLevelSpinner() {
+//        List<String> moods = new ArrayList<>();
+//        moods.add("Very low");
+//        moods.add("Low");
+//        moods.add("Average");
+//        moods.add("Good");
+//        moods.add("Very good");
+//
+//        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, moods);
+//        fragmentDataEntryBinding.moodLevelSpinner.setAdapter(arrayAdapter);
+//    }
 
 
     private void enableOrDisableButton() {
@@ -199,7 +203,11 @@ public class DataEntryFragment extends Fragment implements View.OnClickListener,
     public void insertPainRecord() {
         String painLevel = fragmentDataEntryBinding.seekBarCurrentValue.getText().toString();
         String painLocation = fragmentDataEntryBinding.painLocationSpinner.getSelectedItem().toString();
-        String moodLevel = fragmentDataEntryBinding.moodLevelSpinner.getSelectedItem().toString();
+        RadioGroup radioGroup = fragmentDataEntryBinding.locRadio;
+        int radioId = radioGroup.getCheckedRadioButtonId();
+        RadioButton radioButton = getActivity().findViewById(radioId);
+        String moodLevel = radioButton.getText().toString();
+//        String moodLevel = fragmentDataEntryBinding.moodLevelSpinner.getSelectedItem().toString();
         String stepsTaken = fragmentDataEntryBinding.stepsTakenEditText.getText().toString();
         String stepsGoal = fragmentDataEntryBinding.stepsGoalEditText.getText().toString();
         int painLevelInt;
@@ -238,7 +246,11 @@ public class DataEntryFragment extends Fragment implements View.OnClickListener,
 
         String painLevel = fragmentDataEntryBinding.seekBarCurrentValue.getText().toString();
         String painLocation = fragmentDataEntryBinding.painLocationSpinner.getSelectedItem().toString();
-        String moodLevel = fragmentDataEntryBinding.moodLevelSpinner.getSelectedItem().toString();
+        RadioGroup radioGroup = fragmentDataEntryBinding.locRadio;
+        int radioId = radioGroup.getCheckedRadioButtonId();
+        RadioButton radioButton = getActivity().findViewById(radioId);
+        String moodLevel = radioButton.getText().toString();
+//        String moodLevel = fragmentDataEntryBinding.moodLevelSpinner.getSelectedItem().toString();
         String stepsTaken = fragmentDataEntryBinding.stepsTakenEditText.getText().toString();
         String stepsGoal = fragmentDataEntryBinding.stepsGoalEditText.getText().toString();
         int painLevelInt;

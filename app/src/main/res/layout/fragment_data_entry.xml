@@ -1,170 +1,228 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragment.DataEntryFragment">
 
-    <TextView
-        android:id="@+id/seekBarTextView"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Pain Intensity Level: "
-        />
 
-    <TextView
-        android:id="@+id/seekBarCurrentValue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:layout_toRightOf="@+id/seekBarTextView"
-        android:layout_marginTop="20dp"/>
+        <TextView
+            android:id="@+id/seekBarTextView"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pain Intensity Level: "
+            />
 
-    <SeekBar
-        android:id="@+id/seekBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:max="10"
-        android:min="1"
-        android:layout_marginTop="10dp"
-        android:layout_below="@+id/seekBarTextView"/>
+        <TextView
+            android:id="@+id/seekBarCurrentValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:layout_toRightOf="@+id/seekBarTextView"
+            android:layout_marginTop="20dp"/>
 
-    <TextView
-        android:id="@+id/seekBarMinValue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="0"
-        android:layout_marginLeft="12dp"
-        android:layout_below="@+id/seekBar"
-        />
+        <SeekBar
+            android:id="@+id/seekBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="10"
+            android:min="1"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/seekBarTextView"/>
 
-    <TextView
-        android:id="@+id/seekBarMaxValue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/seekBar"
-        android:text="10"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="12dp"
-        />
+        <TextView
+            android:id="@+id/seekBarMinValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:layout_marginLeft="12dp"
+            android:layout_below="@+id/seekBar"
+            />
 
-    <TextView
-        android:id="@+id/painLocationTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/seekBarMinValue"
-        android:text="Pain Location"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="10dp"
-        />
+        <TextView
+            android:id="@+id/seekBarMaxValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/seekBar"
+            android:text="10"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="12dp"
+            />
 
-    <Spinner
-        android:id="@+id/painLocationSpinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_below="@+id/painLocationTextView"
-        android:layout_marginTop="10dp" />
+        <TextView
+            android:id="@+id/painLocationTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/seekBarMinValue"
+            android:text="Pain Location"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
+            />
 
-    <TextView
-        android:id="@+id/moodLevelTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/painLocationSpinner"
-        android:text="Mood Level"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="10dp"
-        />
+        <Spinner
+            android:id="@+id/painLocationSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_below="@+id/painLocationTextView"
+            android:layout_marginTop="10dp" />
 
-    <Spinner
-        android:id="@+id/moodLevelSpinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_below="@+id/moodLevelTextView"
-        android:layout_marginTop="10dp" />
+        <TextView
+            android:id="@+id/moodLevelTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/painLocationSpinner"
+            android:text="Mood Level"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
+            />
 
-    <TextView
-        android:id="@+id/stepsTakenTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Steps Taken"
-        android:layout_below="@+id/moodLevelSpinner"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        />
+<!--        <Spinner-->
+<!--            android:id="@+id/moodLevelSpinner"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginLeft="10dp"-->
+<!--            android:layout_marginRight="10dp"-->
+<!--            android:layout_below="@+id/moodLevelTextView"-->
+<!--            android:layout_marginTop="10dp" />-->
 
-    <EditText
-        android:id="@+id/stepsTakenEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/stepsTakenTextView"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
-        android:text="10000"
-        />
+        <RadioGroup
+            android:id="@+id/locRadio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/moodLevelTextView"
+            android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/stepGoal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Steps Goal"
-        android:layout_below="@+id/stepsTakenEditText"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        />
+        <RadioButton
+            android:id="@+id/veryLow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Very Low"
+            />
 
-    <EditText
-        android:id="@+id/stepsGoalEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/stepGoal"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
-        android:text="10000"
-        />
 
-    <Button
-        android:id="@+id/saveButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="40dp"
-        android:layout_marginTop="30dp"
-        android:layout_below="@+id/stepsGoalEditText"
-        android:text="Save" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/deleteButton"
-        android:layout_toRightOf="@id/saveButton"
-        android:layout_below="@+id/stepsGoalEditText"
-        android:layout_marginTop="30dp"
-        android:layout_marginLeft="30dp"
-        android:text="Delete"/>
+        <RadioButton android:id="@+id/low"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Low"
 
-    <Button
-        android:id="@+id/editButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/stepsGoalEditText"
-        android:layout_marginRight="40dp"
-        android:text="Edit" />
+            />
 
-    <TextView
-        android:id="@+id/textView_read"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:layout_below="@+id/saveButton"/>
 
+
+        <RadioButton android:id="@+id/average"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Average"
+            android:checked="true"
+            />
+
+
+
+        <RadioButton android:id="@+id/good"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="Good"
+            />
+
+        <RadioButton
+            android:id="@+id/veryGood"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Very Good"
+            />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/stepsTakenTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Steps Taken"
+            android:layout_below="@+id/locRadio"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            />
+
+        <EditText
+            android:id="@+id/stepsTakenEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/stepsTakenTextView"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:text="10000"
+            />
+
+        <TextView
+            android:id="@+id/stepGoal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Steps Goal"
+            android:layout_below="@+id/stepsTakenEditText"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            />
+
+        <EditText
+            android:id="@+id/stepsGoalEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/stepGoal"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:text="10000"
+            />
+
+        <Button
+            android:id="@+id/saveButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="30dp"
+            android:layout_below="@+id/stepsGoalEditText"
+            android:text="Save" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/deleteButton"
+            android:layout_toRightOf="@id/saveButton"
+            android:layout_below="@+id/stepsGoalEditText"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="30dp"
+            android:text="Delete"/>
+
+        <Button
+            android:id="@+id/editButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/stepsGoalEditText"
+            android:layout_marginRight="40dp"
+            android:text="Edit" />
+
+        <TextView
+            android:id="@+id/textView_read"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:layout_below="@+id/saveButton"/>
 
 </RelativeLayout>
+
+</ScrollView>
+
+
+

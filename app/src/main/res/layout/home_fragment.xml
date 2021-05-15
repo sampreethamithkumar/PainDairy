@@ -41,7 +41,15 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Location: Melbourne" />
+            android:text="Location: Melbourne"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:id="@+id/date"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -53,7 +61,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Temperature: "/>
+                android:text="Temperature: "
+                android:textStyle="bold"
+                />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -74,7 +84,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Pressure: "/>
+                android:text="Pressure: "
+                android:textStyle="bold"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -94,7 +105,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Humidity: "/>
+                android:text="Humidity: "
+                android:textStyle="bold"
+                />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -105,6 +118,13 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/weatherLinerLayout"
+        android:layout_marginTop="20dp"
+        android:id="@+id/imageView" />
 
 
 
